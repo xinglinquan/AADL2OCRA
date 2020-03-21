@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+   	point="org.eclipse.ui.popupMenus">
+    <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            id="test.contribution1"
+			nameFilter="*.aadl">
+         <menu
+               label="AADL模型求精验证"
+               path="additions"
+               id="test.menu1">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               label="AADL contract refinement"
+               class="aadl2ocra.actions.ContractRefinementEntry"
+               menubarPath="test.menu1/group1"
+               enablesFor="1"
+               id="test.newAction">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>
