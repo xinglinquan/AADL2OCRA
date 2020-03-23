@@ -38,8 +38,8 @@ public class MainFrame2 extends JFrame {
 			}
 		});
 	}
-	HashMap<String, Integer> map1=new HashMap<>();//记录组件和契约行数的map映射
-	HashMap<String, String> map2=new LinkedHashMap();//记录组件和组件类型行数的map映射
+	HashMap<String, Integer> map1=new HashMap<>();//缁勪欢鍒板绾﹁鏁扮殑鏄犲皠
+	HashMap<String, String> map2=new LinkedHashMap();//缁勪欢鍒扮粍浠剁被鍨嬬殑鏄犲皠
 	/**
 	 * Create the frame.
 	 */
@@ -53,7 +53,7 @@ public class MainFrame2 extends JFrame {
 		System.out.println("test0");
 		split(s);
 		System.out.println("test1");
-		String[] columnNames =  {"组件名称", "组件类型"};  
+		String[] columnNames =  {"缁勪欢鍚嶇О", "缁勪欢绫诲瀷"};  
 		Object[][] obj = new Object[map2.size()][2];
 		int i =0;
 		for(String key:map2.keySet())
@@ -105,7 +105,7 @@ public class MainFrame2 extends JFrame {
         try{  
         	reader=new BufferedReader(new FileReader(file));  
             while((temp=reader.readLine())!=null){  
-               // System.out.println("第"+line+"行:"+temp);
+               // System.out.println("锟斤拷"+line+"锟斤拷:"+temp);
 
             	String []arrayStr=temp.split("\\s+");
                 for(int i =0;i<arrayStr.length;i++) {
