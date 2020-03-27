@@ -35,13 +35,17 @@ public class ContractRefinementEntry implements IObjectActionDelegate {
 	private static String projectname;
 	/** */
 	private SystemInstance _si = null;
+	private SystemImplementation sysimpl = null;
 	/** */
 	private static IProject cproject;
 	private static ISelectionService selectionService;
 	@Override
 	public void run(IAction iaction) {
 		// TODO Auto-generated method stub
-		MainFrame2 mf = new MainFrame2(get_IFile());
+		MainFrame2 mf = new MainFrame2(sysimpl);
+		System.out.println("1  "+_si);
+		System.out.println("2  "+sysimpl.getType().getFullName());
+		System.out.println("3  "+sysimpl.getAllSubcomponents().get(0).getSubcomponentType().getFullName());
 		mf.setVisible(true);
 		preCprjCreate();
 	}
@@ -75,13 +79,14 @@ public class ContractRefinementEntry implements IObjectActionDelegate {
 					org.osate.aadl2.instance.SystemInstance model;
 					XtextResourceSet resourceSet = OsateResourceUtil.getResourceSet();
 					String sp = file.getFullPath().toString();
-					String spnew = "/AADL_OCRA/instances/example_example1_impl_Instance.aaxl2";
-					Resource resource = resourceSet.getResource(URI.createPlatformResourceURI(spnew, false), true);
+					System.out.println(sp);
+					Resource resource = resourceSet.getResource(URI.createPlatformResourceURI(sp, false), true);
 					if (resource.getContents().size() > 0) {
 
 						model = (org.osate.aadl2.instance.SystemInstance) resource.getContents().get(0);
 						_si = model;
 						// Template.abolutePathOfSystem=file.getFullPath().toString();
+						sysimpl=getSystemImplementation2((SystemInstanceImpl) _si);
 					} else {
 						model = null;
 						
@@ -120,14 +125,13 @@ public class ContractRefinementEntry implements IObjectActionDelegate {
 	}
 
 	/**
-	 * systemInstanceImpl和systemImplementation的关系 Each SystemImplementation is a
+	 * systemInstanceImpl锟斤拷systemImplementation锟侥癸拷系 Each SystemImplementation is a
 	 * ComponentImplementation of SystemInstanceImpl GetInstantiatedObjects()
 	 * returns a list of ComponentImplementation
 	 */
 	public void preCprjCreate() {
 		//Tools.setCurrentProject(GeneratorAction.cproject);
-		final SystemImplementation sys = getSystemImplementation2((SystemInstanceImpl) _si);
-		int state = Generation.codeGeneration(sys, cproject, "D:\\osate2-2.3.7-vfinal-win32.win32.x86_64\\runtime-EclipseApplication\\AADL_OCRA\\");
+		int state = Generation.codeGeneration(sysimpl, cproject, "D:\\osate2-2.3.7-vfinal-win32.win32.x86_64\\runtime-EclipseApplication\\AADL_OCRA\\");
 		if(state==1) {
 			System.out.println("success!");
 		}

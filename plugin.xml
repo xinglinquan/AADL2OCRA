@@ -7,7 +7,7 @@
     <objectContribution
             objectClass="org.eclipse.core.resources.IFile"
             id="test.contribution1"
-			nameFilter="*.aadl">
+			nameFilter="*.aaxl2">
          <menu
                label="AADL模型求精验证"
                path="additions"
@@ -17,7 +17,7 @@
             </separator>
          </menu>
          <action
-               label="AADL contract refinement"
+               label="契约求精验证"
                class="aadl2ocra.actions.ContractRefinementEntry"
                menubarPath="test.menu1/group1"
                enablesFor="1"
@@ -25,5 +25,27 @@
          </action>
       </objectContribution>
    </extension>
-
+	<extension
+   	point="org.eclipse.ui.popupMenus">
+    <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            id="test.contribution1"
+			nameFilter="*.aadl">
+         <menu
+               label="AADL模型求精验证"
+               path="additions"
+               id="test.menu2">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               label="添加\修改契约"
+               class="aadl2ocra.actions.Add_EditContractEntry"
+               menubarPath="test.menu2/group1"
+               enablesFor="1"
+               id="test.newAction">
+         </action>
+      </objectContribution>
+   </extension>
 </plugin>

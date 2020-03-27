@@ -11,6 +11,7 @@ class GenerateOss {
  
     def static void generate(SystemImplementation system) {
            Tools.createFile("oss","system.oss",systemcompile(system).toString);
+         
            //System.out.println(systemcompile(system).toString);
           // System.out.println(system.name);
            //System.out.println("1 "+system.allPropertyAssociations);

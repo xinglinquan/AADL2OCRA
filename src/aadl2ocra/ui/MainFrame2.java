@@ -14,6 +14,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableColumn;
+
+import org.osate.aadl2.Subcomponent;
+import org.osate.aadl2.SystemImplementation;
+import org.osate.aadl2.SystemSubcomponent;
+import org.osate.aadl2.instance.SystemInstance;
+
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JButton;
@@ -38,12 +44,12 @@ public class MainFrame2 extends JFrame {
 			}
 		});
 	}
-	HashMap<String, Integer> map1=new HashMap<>();//组件到契约行数的映射
+	HashMap<String, String> map1=new HashMap<>();//组件到契约的映射
 	HashMap<String, String> map2=new LinkedHashMap();//组件到组件类型的映射
 	/**
 	 * Create the frame.
 	 */
-	public MainFrame2(String s) {
+	public MainFrame2(SystemImplementation sysimpl) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 560);
 		contentPane = new JPanel();
@@ -51,7 +57,7 @@ public class MainFrame2 extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		System.out.println("test0");
-		split(s);
+		//analyse(sysimpl);
 		System.out.println("test1");
 		String[] columnNames =  {"组件名称", "组件类型"};  
 		Object[][] obj = new Object[map2.size()][2];
@@ -80,12 +86,8 @@ public class MainFrame2 extends JFrame {
 		button.setBounds(14, 430, 113, 27);
 		contentPane.add(button);
 		
-		JButton button_1 = new JButton("\u6DFB\u52A0\u5951\u7EA6");
-		button_1.setBounds(305, 430, 113, 27);
-		contentPane.add(button_1);
-		
 		JButton button_2 = new JButton("\u9A8C\u8BC1\u5951\u7EA6");
-		button_2.setBounds(160, 430, 113, 27);
+		button_2.setBounds(305, 430, 113, 27);
 		contentPane.add(button_2);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -95,50 +97,18 @@ public class MainFrame2 extends JFrame {
 		
 		scrollPane.setViewportView(table);
 	}
-	
-	ArrayList<String> split(String filename){
-		ArrayList<String> str = new ArrayList<String>();
-		File file=new File(filename);  
-		BufferedReader reader=null;  
-        String temp=null;  
-        int line=1;  
-        try{  
-        	reader=new BufferedReader(new FileReader(file));  
-            while((temp=reader.readLine())!=null){  
-               // System.out.println("��"+line+"��:"+temp);
+	void analyse(SystemImplementation sysimpl) {
+		map2.put(sysimpl.getName(), "system");
 
-            	String []arrayStr=temp.split("\\s+");
-                for(int i =0;i<arrayStr.length;i++) {
-                	String componentname = null;
-                	if(arrayStr[i].equals("system")&&(!arrayStr[i+1].equals("implementation"))&&(arrayStr[i+1].indexOf(".impl")==-1)) {
-                		if(arrayStr[i+1].indexOf(";")!=-1) {
-                			arrayStr[i+1]=arrayStr[i+1].substring(0, arrayStr[i+1].length() -1);
-                		}
-                		if(!map2.containsKey(arrayStr[i+1])) {
-                			componentname = arrayStr[i+1];
-                			map2.put(componentname, "system");
-                		}
-                	}
-                	if(arrayStr[i].indexOf("OCRA")!=-1)
-                		map1.put(componentname, line);
-                }
-                line++;  
-            }  
-    }  
-    catch(Exception e){  
-        e.printStackTrace();  
-    }  
-    finally{  
-        if(reader!=null){  
-            try{  
-                reader.close();  
-            }  
-            catch(Exception e){  
-                e.printStackTrace();  
-            }  
-        }  
-    }  
-        
-		return null;
+		if(sysimpl.getOwnedSystemSubcomponents().size()>0) {
+			for(SystemSubcomponent systemsubcomponent : sysimpl.getOwnedSystemSubcomponents()){
+				analyse((SystemImplementation)systemsubcomponent);
+			}
+		}
+		if(sysimpl.getAllSubcomponents().size()>0) {
+			for(Subcomponent component:sysimpl.getAllSubcomponents()) {
+				map2.put(component.getName(), component.getSubcomponentType().getFullName());
+			}
+		}
 	}
 }
