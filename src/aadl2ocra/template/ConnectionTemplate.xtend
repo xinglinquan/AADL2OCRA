@@ -2,8 +2,6 @@ package aadl2ocra.template
 
 import org.osate.aadl2.Connection
 import java.util.List
-import org.osate.aadl2.PortConnection
-import org.osate.aadl2.ConnectionEnd
 class ConnectionTemplate {
 	def static genConnection(List<Connection> connections)'''
 	«FOR connection : connections»

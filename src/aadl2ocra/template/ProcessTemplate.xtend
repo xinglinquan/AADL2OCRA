@@ -1,13 +1,16 @@
 package aadl2ocra.template
 
-import org.osate.aadl2.ProcessSubcomponent
-import org.osate.aadl2.ProcessType
+
 import org.osate.aadl2.ProcessImplementation
 import org.osate.aadl2.ThreadImplementation
 import org.osate.aadl2.PropertyAssociation
 import org.osate.aadl2.impl.StringLiteralImpl
 
 class ProcessTemplate {
+	//def static genProcess(ProcessSubcomponent processSubcomponent){
+		//System.out.println(processSubcomponent.classifier);
+		//System.out.println()
+	//}
 	def static genProcess(ProcessImplementation process)'''
 		COMPONENT «process.name»
 	    «IF process.allFeatures.size > 0»

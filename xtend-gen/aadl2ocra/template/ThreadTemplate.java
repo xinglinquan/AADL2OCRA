@@ -145,6 +145,8 @@ public class ThreadTemplate {
         }
       }
     }
+    _builder.append(" ");
+    _builder.newLine();
     return _builder;
   }
 }

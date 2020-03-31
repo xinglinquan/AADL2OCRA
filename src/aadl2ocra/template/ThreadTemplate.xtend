@@ -57,5 +57,6 @@ class ThreadTemplate {
     	    	 «ENDIF»
     	    «ENDFOR»	
     	 «ENDIF»	
+    	 
     '''	
 }

@@ -5,7 +5,7 @@ import java.util.List
 import org.osate.aadl2.DataPort
 import org.osate.aadl2.EventPort
 import org.osate.aadl2.EventDataPort
-import org.osate.aadl2.DataAccess
+import org.osate.aadl2.PropertyAssociation
 
 class FeatureTemplate {
 	def static genFeature(List<Feature> features)'''
@@ -56,7 +56,11 @@ class FeatureTemplate {
 	'''
 	def static dealClassisfy(Feature feature)'''
 		«IF feature.classifier !== null»
-			boolean;
+			«IF feature.classifier.allPropertyAssociations!==null»
+				«FOR PropertyAssociation pa : feature.classifier.allPropertyAssociations»
+					«PropertyTemplate.dealProperty(pa)»
+				«ENDFOR»
+			«ENDIF»	
 		«ELSE»
 			real;
 		«ENDIF»
