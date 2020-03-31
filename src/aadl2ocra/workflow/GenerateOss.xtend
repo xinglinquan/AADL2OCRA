@@ -5,14 +5,22 @@ import aadl2ocra.tool.Tools
 import aadl2ocra.template.*
 import org.osate.aadl2.PropertyAssociation
 import org.osate.aadl2.impl.StringLiteralImpl
-
+import org.osate.aadl2.ProcessImplementation
 class GenerateOss {
  
  
     def static void generate(SystemImplementation system) {
            Tools.createFile("oss","system.oss",systemcompile(system).toString);
-         
-           //System.out.println(systemcompile(system).toString);
+           /*for (Subcomponent:system.allSubcomponents){
+           	System.out.println("name:"+Subcomponent.name);
+           	System.out.println("Typename:"+Subcomponent.getClassifier);
+           	System.out.println("Typename1:"+Subcomponent.getSubcomponentType);
+           	System.out.println("Typename2:"+Subcomponent.getComponentImplementation);
+           	System.out.println("Typename3:"+Subcomponent.getOwnedPrototypeBindings);
+           	System.out.println("Typename4:"+Subcomponent.getImplementationReferences);
+           	System.out.println("Typename5:"+Subcomponent.getComponentType);
+           	System.out.println("Typename6:"+Subcomponent.getAllClassifier);
+           	}*/
           // System.out.println(system.name);
            //System.out.println("1 "+system.allPropertyAssociations);
           /// System.out.println("2 "+system.allPropertyAssociations.get(0).property.namespace.name);
@@ -30,7 +38,8 @@ class GenerateOss {
     	«IF system.allSubcomponents.size >0»	
     	REFINEMENT
     	«FOR Subcomponent:system.allSubcomponents»
-    	SUB «Subcomponent.name» : «Subcomponent.getComponentImplementation.name»;
+    	
+    	SUB «Subcomponent.name» : «Subcomponent.getSubcomponentType.name»;
     	«ENDFOR»
     	«ENDIF»
     	«IF system.allConnections.size >0»
@@ -38,10 +47,16 @@ class GenerateOss {
     	«ENDIF»    	
     	«system.dealRefinedBy»
     	
-    	«IF system.allSubcomponents.size >0»
-    	«FOR subcomponent:system.allSubcomponents»
-    	«var SystemImplementation systemImplementation = subcomponent.subcomponentType as SystemImplementation»
-    	«systemImplementation.compile»
+    	«IF system.ownedSystemSubcomponents.size >0»
+    	«FOR subcomponent:system.ownedSystemSubcomponents»
+		«var SystemImplementation systemImplementation = subcomponent.subcomponentType as SystemImplementation»
+		«systemImplementation.compile»
+    	«ENDFOR»
+    	«ENDIF»
+    	«IF system.ownedProcessSubcomponents.size >0»
+    	«FOR processsubcomponent : system.ownedProcessSubcomponents»
+		«var ProcessImplementation processImplementation = processsubcomponent.subcomponentType as ProcessImplementation»
+		«ProcessTemplate.genProcess(processImplementation)»
     	«ENDFOR»
     	«ENDIF»
     '''
@@ -55,7 +70,7 @@ class GenerateOss {
     	«IF system.allSubcomponents.size >0»
 		REFINEMENT
     	«FOR component:system.allSubcomponents»
-		SUB «component.name» : «component.getSubcomponentType»;
+		SUB «component.name» : «component.getSubcomponentType.name»;
     	«ENDFOR»
     	«ENDIF»
     	«IF system.allConnections.size >0»
@@ -63,10 +78,16 @@ class GenerateOss {
     	«ENDIF»		
 		«system.dealRefinedBy»
 		
-    	«IF system.allSubcomponents.size >0»
-    	«FOR subcomponent:system.allSubcomponents»
+    	«IF system.ownedSystemSubcomponents.size >0»
+    	«FOR subcomponent:system.ownedSystemSubcomponents»
 		«var SystemImplementation systemImplementation = subcomponent.subcomponentType as SystemImplementation»
 		«systemImplementation.compile»
+    	«ENDFOR»
+    	«ENDIF»
+    	«IF system.ownedProcessSubcomponents.size >0»
+    	«FOR processsubcomponent : system.ownedProcessSubcomponents»
+		«var ProcessImplementation processImplementation = processsubcomponent.subcomponentType as ProcessImplementation»
+		«ProcessTemplate.genProcess(processImplementation)»
     	«ENDFOR»
     	«ENDIF»
     '''
