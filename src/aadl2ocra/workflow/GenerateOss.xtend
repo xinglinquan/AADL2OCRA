@@ -1,20 +1,19 @@
 package aadl2ocra.workflow
 
 import org.osate.aadl2.SystemImplementation
-import aadl2ocra.tool.Tools
 import aadl2ocra.template.ConnectionTemplate
 import aadl2ocra.template.FeatureTemplate
 import aadl2ocra.template.ProcessTemplate
 import org.osate.aadl2.PropertyAssociation
 import org.osate.aadl2.impl.StringLiteralImpl
 import org.osate.aadl2.ProcessImplementation
-
+import aadl2ocra.tool.FileUtils
 
 class GenerateOss {
  
  
     def static void generate(SystemImplementation system) {
-           Tools.createFile("oss","system.oss",systemcompile(system).toString);
+           FileUtils.createFile("oss","system.oss",systemcompile(system).toString);
 
 	}
 	

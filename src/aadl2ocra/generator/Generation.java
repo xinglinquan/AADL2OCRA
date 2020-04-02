@@ -10,7 +10,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.osate.aadl2.SystemImplementation;
 
-import aadl2ocra.tool.Tools;
+import aadl2ocra.tool.FileUtils;
 import aadl2ocra.workflow.*;
 
 
@@ -22,7 +22,7 @@ public class Generation {
 		if (system != null && project != null)
 		{
 			//IFileSystemAccess2 fsa;
-			Tools.projects = project;
+			FileUtils.projects = project;
 //			testTime.testInit();
 			GenerateOss.generate(system);
 //			IFolder folder = project.getFolder("Ada_codes");

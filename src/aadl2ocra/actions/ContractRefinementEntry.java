@@ -26,8 +26,10 @@ import org.osate.workspace.IAadlElement;
 import org.osate.workspace.IAadlProject;
 
 import aadl2ocra.generator.Generation;
+import aadl2ocra.tool.OcraRunner;
 import aadl2ocra.ui.MainFrame;
 import aadl2ocra.ui.MainFrame2;
+import aadl2ocra.function.CheckContractRefinement;
 import aadl2ocra.generator.*;
 
 public class ContractRefinementEntry implements IObjectActionDelegate {
@@ -48,6 +50,17 @@ public class ContractRefinementEntry implements IObjectActionDelegate {
 		System.out.println("3  "+sysimpl.getAllSubcomponents().get(0).getSubcomponentType().getFullName());
 		mf.setVisible(true);
 		preCprjCreate();
+		OcraRunner ocraRunner = new OcraRunner();
+		CheckContractRefinement CCR = new CheckContractRefinement();
+		System.out.println("before");
+		ocraRunner.setOcraFunction(CCR);
+		try {
+			ocraRunner.runOcra();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("after");
 	}
 
 	@Override
