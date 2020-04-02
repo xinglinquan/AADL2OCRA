@@ -7,7 +7,8 @@ import aadl2ocra.template.ProcessTemplate
 import org.osate.aadl2.PropertyAssociation
 import org.osate.aadl2.impl.StringLiteralImpl
 import org.osate.aadl2.ProcessImplementation
-import aadl2ocra.tool.FileUtils
+import aadl2ocra.utils.FileUtils
+import aadl2ocra.utils.StringUtils
 
 class GenerateOss {
  
@@ -18,7 +19,7 @@ class GenerateOss {
 	}
 	
     def static systemcompile(SystemImplementation system)'''
-    	COMPONENT «system.name» system
+    	COMPONENT «StringUtils.convertPoint(system.name)» system
     	«IF system.allFeatures.size > 0»    	
 		INTERFACE
 		«FeatureTemplate.genFeature(system.allFeatures)»
@@ -27,7 +28,7 @@ class GenerateOss {
     	«IF system.allSubcomponents.size >0»	
     	REFINEMENT
     	«FOR Subcomponent:system.allSubcomponents»    	
-    	SUB «Subcomponent.name» : «Subcomponent.getSubcomponentType.name»;
+    	SUB «Subcomponent.name» : «StringUtils.convertPoint(Subcomponent.getSubcomponentType.name)»;
     	«ENDFOR»
     	«ENDIF»
     	«IF system.allConnections.size >0»
@@ -49,7 +50,7 @@ class GenerateOss {
     	
     '''
     def static compile(SystemImplementation system)'''
-		COMPONENT «system.name»
+		COMPONENT «StringUtils.convertPoint(system.name)»
     	«IF system.allFeatures.size > 0»
 		INTERFACE
 		«FeatureTemplate.genFeature(system.allFeatures)»
@@ -58,7 +59,7 @@ class GenerateOss {
     	«IF system.allSubcomponents.size >0»
 		REFINEMENT
     	«FOR component:system.allSubcomponents»
-		SUB «component.name» : «component.getSubcomponentType.name»;
+		SUB «component.name» : «StringUtils.convertPoint(component.getSubcomponentType.name)»;
     	«ENDFOR»
     	«ENDIF»
     	«IF system.allConnections.size >0»

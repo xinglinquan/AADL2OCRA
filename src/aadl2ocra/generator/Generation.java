@@ -10,7 +10,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.osate.aadl2.SystemImplementation;
 
-import aadl2ocra.tool.FileUtils;
+import aadl2ocra.utils.FileUtils;
 import aadl2ocra.workflow.*;
 
 

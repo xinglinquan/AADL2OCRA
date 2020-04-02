@@ -1,4 +1,4 @@
-package aadl2ocra.tool;
+package aadl2ocra.utils;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;

@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import aadl2ocra.function.OcraFunction;
+import aadl2ocra.utils.FileUtils;
 public class OcraRunner {
 	/** The tool executable. */
 	protected final String ocraExecutable = "G:\\ocra\\ocra-1.4.0\\bin\\win64\\ocra-win64.exe"; // executable name of the tool

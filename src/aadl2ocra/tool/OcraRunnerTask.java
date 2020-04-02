@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.swing.JFrame;
+
+import aadl2ocra.ui.CheckResult;
+
 public class OcraRunnerTask implements Callable{
 	private String[] cmdArray;
 	/** The process that runs the tool */
@@ -31,7 +35,10 @@ public class OcraRunnerTask implements Callable{
 		errorStreamReader.join();
 		
 		// for debug purpose
-
+		List<String> result = outputStreamReader.getReadLines();
+		CheckResult checkResult = new CheckResult(result);
+		checkResult.setVisible(true);
+		checkResult.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		System.out.println(outputStreamReader.getReadString());
 		System.out.println(errorStreamReader.getReadString());
 		return null;

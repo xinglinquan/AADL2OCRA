@@ -9,5 +9,6 @@ public class CheckContractRefinement extends OcraFunction{
 			//cmd+=" -i "+getContractModel();
 		//}
 		commands.add(cmd);
+		commands.add("quit");
 	}
 }
