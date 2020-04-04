@@ -25,13 +25,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
+import aadl2ocra.utils.ContractUtils;
 public class Contract extends JFrame {
 
 	private JPanel contentPane;
 	public ArrayList<String> aadlContentList = new ArrayList<>();
 	public String filePath = null;
 	private JTextField textField;
-	HashMap<String,String[]> map = new HashMap<String,String[]>();
+	HashMap<String,ArrayList<ContractUtils>> ContractMap = new HashMap<String,ArrayList<ContractUtils>>();//组件到其契约的映射
 	HashMap<String,String> map2 = new HashMap<String,String>();
 	/*
 	 * Launch the application.
@@ -54,7 +55,7 @@ public class Contract extends JFrame {
 	 */
 	public Contract(String s) {
 		filePath =s;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 575);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -71,12 +72,12 @@ public class Contract extends JFrame {
 		}
 		initcomboBox(comboBox);
 		contentPane.add(comboBox);
-		JLabel lblNewLabel = new JLabel("ContractName");
+		JLabel lblNewLabel = new JLabel("契约名称");
 		lblNewLabel.setBounds(24, 63, 107, 18);
 		contentPane.add(lblNewLabel);
 		textField = new JTextField();
 		textField.setBounds(132, 60, 286, 24);
-		JLabel lblAssume = new JLabel("Assume");
+		JLabel lblAssume = new JLabel("假设");
 		lblAssume.setBounds(24, 94, 72, 18);
 		contentPane.add(lblAssume);
 		
@@ -84,7 +85,7 @@ public class Contract extends JFrame {
 		textArea.setBounds(24, 125, 394, 84);
 		contentPane.add(textArea);
 		
-		JLabel lblGuarantee = new JLabel("Guarantee");
+		JLabel lblGuarantee = new JLabel("保证");
 		lblGuarantee.setBounds(24, 238, 72, 18);
 		contentPane.add(lblGuarantee);
 		
@@ -92,7 +93,7 @@ public class Contract extends JFrame {
 		textArea_1.setBounds(24, 269, 394, 84);
 		contentPane.add(textArea_1);
 		
-		JLabel lblRefined = new JLabel("Refined By");
+		JLabel lblRefined = new JLabel("求精分解");
 		lblRefined.setBounds(24, 366, 89, 18);
 		contentPane.add(lblRefined);
 		
@@ -100,21 +101,28 @@ public class Contract extends JFrame {
 		textArea_2.setBounds(24, 397, 394, 66);
 		contentPane.add(textArea_2);
 		
+		for(int i =0;i<comboBox.getItemCount();i++) {
+			String str = comboBox.getItemAt(i);
+			searchContract(str);
+		}
+		for(int i =0;i<comboBox.getItemCount();i++) {
+			String str = comboBox.getItemAt(i);
+			searchRefinedBy(str);
+		}	
 		JButton button = new JButton("查看契约");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(comboBox.getSelectedItem().toString()==null)
 					JOptionPane.showMessageDialog(null, "请选择一个组件！", "", JOptionPane.ERROR_MESSAGE);
-				if(map.containsKey(comboBox.getSelectedItem().toString())){
-					System.out.println("11111");
-					String[] temp = map.get(comboBox.getSelectedItem().toString());
-					textField.setText(temp[0]);
-					textArea.setText(temp[1]);
-					textArea_1.setText(temp[2]);
-				}
-				if(map2.containsKey(comboBox.getSelectedItem().toString())){
-					String temp = map2.get(comboBox.getSelectedItem().toString());
-					textArea_2.setText(temp);
+				else {
+					ArrayList<ContractUtils> contractList;
+					if(ContractMap.containsKey(comboBox.getSelectedItem().toString())) {
+						contractList = ContractMap.get(comboBox.getSelectedItem().toString());
+					}else {
+						contractList = new ArrayList<ContractUtils>();
+					}
+					SearchContract searchContract = new SearchContract(comboBox.getSelectedItem().toString(),contractList);
+					searchContract.setVisible(true);
 				}
 			}
 		});
@@ -133,18 +141,28 @@ public class Contract extends JFrame {
 				if(textArea_1.getText().isEmpty())
 					JOptionPane.showMessageDialog(null, "Guarantee不能为空！", "", JOptionPane.ERROR_MESSAGE);
 				String contract = null;
+
 				if(!findProperties(comboBox))					
 					contract ="\t\t"+"properties"+"\n";
 				contract+="\t\t\t"+"OCRA::Contract=>\""+"CONTRACT "+textField.getText().toString()+"\n"
 						+"\t\t\t\t"+"assume: "+textArea.getText().toString()+";\n"
 						+"\t\t\t\t"+"guarantee: "+textArea_1.getText().toString()+";\";\n";
 				String[] temp= {textField.getText().toString(),textArea.getText().toString(),textArea_1.getText().toString()};
-				map.put(comboBox.getSelectedItem().toString(), temp);
+				//map.put(comboBox.getSelectedItem().toString(), temp);
 				if(!textArea_2.getText().isEmpty()) {
 					contract+="\t\t\t"+"OCRA::RefinedBy=>\""+"CONTRACT "+textField.getText().toString()
 								+" REFINEDBY "+textArea_2.getText().toString()+";\";\n";
-					map2.put(comboBox.getSelectedItem().toString(), textArea_2.getText().toString());
+					//map2.put(comboBox.getSelectedItem().toString(), textArea_2.getText().toString());
 				}
+				ContractUtils contractUtils = new ContractUtils(textField.getText().toString(),textArea.getText().toString(),textArea_1.getText().toString(),textArea_2.getText().toString());
+				ArrayList<ContractUtils> contractList;
+				if(ContractMap.containsKey(comboBox.getSelectedItem().toString())) {
+					contractList = ContractMap.get(comboBox.getSelectedItem().toString());
+				}else {
+					contractList = new ArrayList<ContractUtils>();
+				}
+				contractList.add(contractUtils);
+				ContractMap.put(comboBox.getSelectedItem().toString(), contractList);
 				try {
 					insertContract(contract,comboBox);
 				} catch (IOException e) {
@@ -170,47 +188,146 @@ public class Contract extends JFrame {
 		}
 		br.close();
 	}
-	public void searchContract(JComboBox<String> comboBox) {
-		String target1="implementation "+(String)comboBox.getSelectedItem();
-		String target2="end "+(String)comboBox.getSelectedItem();
+	public void searchContract(String str) {
+		String target1="implementation "+str;
+		String target2="end "+str;
 		int length = aadlContentList.size();
 		int start=0;
 		int end=0;
-		for(int i=0;i<length;i++)
-		{
-			if(aadlContentList.get(i).indexOf(target1)!=-1)
-			{
+		int contract_start=0;
+		int contract_end=0;
+		for(int i=0;i<length;i++){
+			if(aadlContentList.get(i).indexOf(target1)!=-1){
 				start=i;
 				break;
 			}
 		}
-		for(int i=0;i<length;i++)
-		{
-			if(aadlContentList.get(i).indexOf(target2)!=-1)
-			{
+		for(int i=0;i<length;i++){
+			if(aadlContentList.get(i).indexOf(target2)!=-1){
 				end=i;
 				break;
 			}
 		}
-		String name =null;
-		String assume=null;
-		String guarantee=null;
-		String refinedby=null;
+
 		for(int i =start;i<end;i++){
+			if(aadlContentList.get(i).indexOf("OCRA::Contract")!=-1){
+				contract_start=i;
+			}
+			if(aadlContentList.get(i).indexOf("\";")!=-1) {
+				contract_end=i;
+				break;
+			}
+		}
+		for(int i = contract_start+1;i<contract_end;i++) {
+			StringBuilder name =new StringBuilder();
+			StringBuilder assume = new StringBuilder();
+			StringBuilder guarantee= new StringBuilder();
 			String s = aadlContentList.get(i);
 			s = replaceBlank(s);
 			String[] temp = s.split("\\s+");
-			if(temp[0].contains("OCRA::Contract=>")) {
-				name=temp[1];
+			name.append(temp[1]);
+			System.out.println("0:"+name);
+			for(int j = i+1;j<contract_end;j++) {
+				if(!aadlContentList.get(j).contains(";"))
+					assume.append(replaceBlank(aadlContentList.get(j))+"\n");
+				else {
+					assume.append(replaceBlank(aadlContentList.get(j))+"\n");
+					System.out.println("1:"+assume);
+					i = j;
+					break;
+				}
 			}
-			if(temp[0].contains("assume:")) {
-				assume=s.substring(7, s.length()-3);
+			for(int j = i+1;j<contract_end;j++) {
+				System.out.println(j);
+				System.out.println(contract_end);
+				if(!aadlContentList.get(j).contains(";")) {
+					System.out.println("test");
+					guarantee.append(replaceBlank(aadlContentList.get(j))+"\n");
+				}
+				else {
+					guarantee.append(replaceBlank(aadlContentList.get(j))+"\n");
+					System.out.println("2:"+guarantee);
+					i=j;
+					break;
+				}
 			}
-			if(temp[0].contains("guarantee:")) {
-				guarantee=s.substring(10, s.length()-3);
+			if(!name.toString().isEmpty()) {
+				ContractUtils contractUtils = new ContractUtils(name.toString(),assume.toString(),guarantee.toString(),null);
+				ArrayList<ContractUtils> contractList;
+				if(ContractMap.containsKey(str)) {
+					contractList = ContractMap.get(str);
+				}else {
+					contractList = new ArrayList<ContractUtils>();
+				}
+				contractList.add(contractUtils);
+				ContractMap.put(str, contractList);
 			}
-			if(temp[0].contains("OCRA::RefinedBy=>")) {
-				name=s.substring(18, s.length()-3);
+		}
+	}
+	public void searchRefinedBy(String str) {
+		String target1="implementation "+str;
+		String target2="end "+str;
+		int length = aadlContentList.size();
+		int start=0;
+		int end=0;
+		int refinedby_start=0;
+		int refinedby_end=0;
+		for(int i=0;i<length;i++){
+			if(aadlContentList.get(i).indexOf(target1)!=-1){
+				start=i;
+				break;
+			}
+		}
+		for(int i=0;i<length;i++){
+			if(aadlContentList.get(i).indexOf(target2)!=-1){
+				end=i;
+				break;
+			}
+		}
+		System.out.println("start:"+start);
+		System.out.println("end:"+end);
+		boolean judge=false;
+		for(int i =start;i<end;i++){
+			System.out.println(aadlContentList.get(i));
+			if(aadlContentList.get(i).indexOf("OCRA::RefinedBy")!=-1){
+				refinedby_start=i;
+			}
+			if(aadlContentList.get(i).indexOf("\";")!=-1&&judge==true) {
+				refinedby_end = i;
+				break;
+			}
+			if(aadlContentList.get(i).indexOf("\";")!=-1&&judge==false) {
+				judge = true;
+			}
+		}
+		for(int i = refinedby_start+1;i<refinedby_end;i++) {
+			System.out.println(refinedby_start);
+			StringBuilder name =new StringBuilder();
+			StringBuilder refinedby = new StringBuilder();
+			String s = aadlContentList.get(i);
+			System.out.println(s);
+			s = replaceBlank(s);
+			String[] temp = s.split("\\s+");
+			name.append(temp[1]);
+			System.out.println("0:"+name);
+			for(int j = i;j<refinedby_end;j++) {
+				if(!aadlContentList.get(j).contains(";"))
+					refinedby.append(replaceBlank(aadlContentList.get(j))+"\n");
+				else {
+					refinedby.append(replaceBlank(aadlContentList.get(j))+"\n");
+					System.out.println("1:"+refinedby);
+					i = j;
+					break;
+				}
+			}
+			if(!name.toString().isEmpty()) {
+				ArrayList<ContractUtils> contractList = ContractMap.get(str);
+				for(ContractUtils contractUtils : contractList) {
+					if(contractUtils.getContractName().equals(name.toString()))
+						System.out.println("test1");
+						contractUtils.setRefinedby(refinedby.toString());
+				}
+				ContractMap.put(str, contractList);
 			}
 		}
 	}

@@ -38,7 +38,6 @@ public class OcraRunnerTask implements Callable{
 		List<String> result = outputStreamReader.getReadLines();
 		CheckResult checkResult = new CheckResult(result);
 		checkResult.setVisible(true);
-		checkResult.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		System.out.println(outputStreamReader.getReadString());
 		System.out.println(errorStreamReader.getReadString());
 		return null;

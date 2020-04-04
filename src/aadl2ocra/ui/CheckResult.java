@@ -40,7 +40,7 @@ public class CheckResult extends JFrame {
 	 */
 	public CheckResult(List<String> result) {
 		setTitle("验证结果");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 640, 475);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
