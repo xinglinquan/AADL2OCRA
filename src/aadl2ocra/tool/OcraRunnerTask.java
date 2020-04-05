@@ -36,10 +36,12 @@ public class OcraRunnerTask implements Callable{
 		
 		// for debug purpose
 		List<String> result = outputStreamReader.getReadLines();
-		CheckResult checkResult = new CheckResult(result);
+		List<String> error  = errorStreamReader.getReadLines();
+		System.out.println("num"+error.size());
+		CheckResult checkResult = new CheckResult(result,error);
 		checkResult.setVisible(true);
-		System.out.println(outputStreamReader.getReadString());
-		System.out.println(errorStreamReader.getReadString());
+		//System.out.println(outputStreamReader.getReadString());
+		System.out.println("error\n"+errorStreamReader.getReadString());
 		return null;
 		
 	}

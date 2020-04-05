@@ -26,12 +26,13 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
 import aadl2ocra.utils.ContractUtils;
+import javax.swing.JScrollPane;
 public class Contract extends JFrame {
 
 	private JPanel contentPane;
 	public ArrayList<String> aadlContentList = new ArrayList<>();
 	public String filePath = null;
-	private JTextField textField;
+	private JTextField txf_Name;
 	HashMap<String,ArrayList<ContractUtils>> ContractMap = new HashMap<String,ArrayList<ContractUtils>>();//组件到其契约的映射
 	HashMap<String,String> map2 = new HashMap<String,String>();
 	/*
@@ -56,105 +57,116 @@ public class Contract extends JFrame {
 	public Contract(String s) {
 		filePath =s;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 575);
+		setBounds(100, 100, 450, 630);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setBounds(24, 13, 189, 24);
+		JComboBox<String> cbb_Component = new JComboBox<String>();
+		cbb_Component.setBounds(24, 13, 189, 24);
 		try {
 			loadAADL2List();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		initcomboBox(comboBox);
-		contentPane.add(comboBox);
-		JLabel lblNewLabel = new JLabel("契约名称");
-		lblNewLabel.setBounds(24, 63, 107, 18);
-		contentPane.add(lblNewLabel);
-		textField = new JTextField();
-		textField.setBounds(132, 60, 286, 24);
-		JLabel lblAssume = new JLabel("假设");
-		lblAssume.setBounds(24, 94, 72, 18);
-		contentPane.add(lblAssume);
-		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(24, 125, 394, 84);
-		contentPane.add(textArea);
-		
-		JLabel lblGuarantee = new JLabel("保证");
-		lblGuarantee.setBounds(24, 238, 72, 18);
-		contentPane.add(lblGuarantee);
-		
-		JTextArea textArea_1 = new JTextArea();
-		textArea_1.setBounds(24, 269, 394, 84);
-		contentPane.add(textArea_1);
-		
-		JLabel lblRefined = new JLabel("求精分解");
-		lblRefined.setBounds(24, 366, 89, 18);
-		contentPane.add(lblRefined);
-		
-		JTextArea textArea_2 = new JTextArea();
-		textArea_2.setBounds(24, 397, 394, 66);
-		contentPane.add(textArea_2);
-		
-		for(int i =0;i<comboBox.getItemCount();i++) {
-			String str = comboBox.getItemAt(i);
-			searchContract(str);
-		}
-		for(int i =0;i<comboBox.getItemCount();i++) {
-			String str = comboBox.getItemAt(i);
-			searchRefinedBy(str);
-		}	
-		JButton button = new JButton("查看契约");
-		button.addActionListener(new ActionListener() {
+		initcomboBox(cbb_Component);
+		contentPane.add(cbb_Component);
+		JButton bt_Check = new JButton("查看契约");
+		bt_Check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(comboBox.getSelectedItem().toString()==null)
+				if(cbb_Component.getSelectedItem().toString()==null)
 					JOptionPane.showMessageDialog(null, "请选择一个组件！", "", JOptionPane.ERROR_MESSAGE);
 				else {
 					ArrayList<ContractUtils> contractList;
-					if(ContractMap.containsKey(comboBox.getSelectedItem().toString())) {
-						contractList = ContractMap.get(comboBox.getSelectedItem().toString());
+					if(ContractMap.containsKey(cbb_Component.getSelectedItem().toString())) {
+						contractList = ContractMap.get(cbb_Component.getSelectedItem().toString());
 					}else {
 						contractList = new ArrayList<ContractUtils>();
 					}
-					SearchContract searchContract = new SearchContract(comboBox.getSelectedItem().toString(),contractList);
+					SearchContract searchContract = new SearchContract(cbb_Component.getSelectedItem().toString(),contractList);
 					searchContract.setVisible(true);
 				}
 			}
 		});
-		button.setBounds(305, 13, 113, 27);
-		contentPane.add(button);
+		bt_Check.setBounds(305, 13, 113, 27);
+		contentPane.add(bt_Check);
+		JLabel lbl_ContractName = new JLabel("契约名称");
+		lbl_ContractName.setBounds(24, 63, 107, 18);
+		contentPane.add(lbl_ContractName);
+		txf_Name = new JTextField();
+		txf_Name.setBounds(132, 60, 286, 24);
+		contentPane.add(txf_Name);
+		txf_Name.setColumns(10);
+		JLabel lbl_Assume = new JLabel("假设");
+		lbl_Assume.setBounds(24, 94, 72, 18);
+		contentPane.add(lbl_Assume);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(24, 125, 394, 84);
+		contentPane.add(scrollPane);
 		
-		JButton button_1 = new JButton("添加契约");
-		button_1.addActionListener(new ActionListener() {
+		JTextArea txa_Assume = new JTextArea();
+		scrollPane.setViewportView(txa_Assume);
+		JLabel lbl_Guarantee = new JLabel("保证");
+		lbl_Guarantee.setBounds(24, 238, 72, 18);
+		contentPane.add(lbl_Guarantee);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(24, 269, 394, 84);
+		contentPane.add(scrollPane_1);
+		
+		JTextArea txa_Guarantee = new JTextArea();
+		scrollPane_1.setViewportView(txa_Guarantee);
+		
+		JLabel lbl_Refined = new JLabel("求精分解");
+		lbl_Refined.setBounds(24, 366, 89, 18);
+		contentPane.add(lbl_Refined);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(24, 389, 394, 84);
+		contentPane.add(scrollPane_2);
+		
+		JTextArea txa_Refined = new JTextArea();
+		scrollPane_2.setViewportView(txa_Refined);
+		
+		for(int i =0;i<cbb_Component.getItemCount();i++) {
+			String str = cbb_Component.getItemAt(i);
+			searchContract(str);
+		}
+		for(int i =0;i<cbb_Component.getItemCount();i++) {
+			String str = cbb_Component.getItemAt(i);
+			searchRefinedBy(str);
+		}	
+		
+		JButton bt_Add = new JButton("添加契约");
+		bt_Add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(comboBox.getSelectedItem().toString()==null)
+				if(cbb_Component.getSelectedItem().toString()==null)
 					JOptionPane.showMessageDialog(null, "请选择一个组件！", "", JOptionPane.ERROR_MESSAGE);
-				if(textField.getText().isEmpty())
+				if(txf_Name.getText().isEmpty())
 					JOptionPane.showMessageDialog(null, "契约名不能为空！", "", JOptionPane.ERROR_MESSAGE);
-				if(textArea.getText().isEmpty())
+				if(txa_Assume.getText().isEmpty())
 					JOptionPane.showMessageDialog(null, "Assume不能为空！", "", JOptionPane.ERROR_MESSAGE);
-				if(textArea_1.getText().isEmpty())
+				if(txa_Guarantee.getText().isEmpty())
 					JOptionPane.showMessageDialog(null, "Guarantee不能为空！", "", JOptionPane.ERROR_MESSAGE);
 				StringBuilder contract =  new StringBuilder();
-				String name = textField.getText().toString();
-				String assume = textArea.getText().toString();
-				String guarantee = textArea_1.getText().toString();
-				String refinedby = "CONTRACT "+name+" REFINEDBY "+textArea_2.getText().toString();
+				String name = txf_Name.getText().toString();
+				String assume = txa_Assume.getText().toString();
+				String guarantee = txa_Guarantee.getText().toString();
+				String refinedby = "";
+				if(!txa_Refined.getText().toString().isEmpty())
+					refinedby = "CONTRACT "+name+" REFINEDBY "+txa_Refined.getText().toString();
 				ContractUtils contractUtils = new ContractUtils(name,assume,guarantee,refinedby);
 				ArrayList<ContractUtils> contractList;
-				if(ContractMap.containsKey(comboBox.getSelectedItem().toString())) {
-					contractList = ContractMap.get(comboBox.getSelectedItem().toString());
+				if(ContractMap.containsKey(cbb_Component.getSelectedItem().toString())) {
+					contractList = ContractMap.get(cbb_Component.getSelectedItem().toString());
 				}else {
 					contractList = new ArrayList<ContractUtils>();
 				}
 				contractList.add(contractUtils);
-				ContractMap.put(comboBox.getSelectedItem().toString(), contractList);
-				if(!findProperties(comboBox))
+				ContractMap.put(cbb_Component.getSelectedItem().toString(), contractList);
+				if(!findProperties(cbb_Component))
 					contract.append("\t\t"+"properties"+"\n");
 				contract.append("\t\t\t"+"OCRA::Contract=>\"\n");
 				for(ContractUtils contractutils : contractList) {
@@ -180,19 +192,24 @@ public class Contract extends JFrame {
 					contract.append("\t\t\t\t"+"\";\n");
 				}
 				System.out.println(contract.toString());
-				removeAllcontract(comboBox);
+				removeAllcontract(cbb_Component);
 				try {
-					insertContract(contract.toString(),comboBox);
+					insertContract(contract.toString(),cbb_Component);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				txf_Name.setText("");
+				txa_Assume.setText("");
+				txa_Guarantee.setText("");
+				txa_Refined.setText("");
+				JOptionPane.showMessageDialog(null, "添加成功！");
 			}
 		});
-		button_1.setBounds(155, 488, 113, 27);
-		contentPane.add(button_1);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		bt_Add.setBounds(155, 521, 113, 27);
+		contentPane.add(bt_Add);
+		
+
 	}
 	public void loadAADL2List() throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -238,7 +255,7 @@ public class Contract extends JFrame {
 		System.out.println("pos_ocra:"+pos_ocra);
 		if(pos_pro==(pos_ocra-1))
 			judge=true;
-		if(judge) {
+		if(judge&&pos_pro!=0&&pos_ocra!=0) {
 			for(int i =pos_pro+1;i<end;i++) {
 				System.out.println("aaa");
 				aadlContentList.remove(i);
@@ -246,7 +263,7 @@ public class Contract extends JFrame {
 				i--;
 			}
 		}
-		else {
+		else if(!judge&&pos_pro!=0&&pos_ocra!=0){
 			for(int i =pos_ocra;i<end;i++) {
 				System.out.println("bbbb");
 				aadlContentList.remove(aadlContentList.get(i));

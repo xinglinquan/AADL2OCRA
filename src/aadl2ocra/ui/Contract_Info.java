@@ -17,11 +17,12 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class Contract_Info extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField txf_Name;
 
 	/**
 	 * Launch the application.
@@ -45,57 +46,70 @@ public class Contract_Info extends JFrame {
 	public Contract_Info(ContractUtils contract) {
 		setTitle(contract.getContractName()+"的详情");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 630);
+		setBounds(100, 100, 450, 655);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel label = new JLabel("契约名称");
-		label.setBounds(37, 48, 72, 18);
-		contentPane.add(label);
+		JLabel lbl_ContractName = new JLabel("契约名称");
+		lbl_ContractName.setBounds(37, 48, 72, 18);
+		contentPane.add(lbl_ContractName);
 		
-		textField = new JTextField();
-		textField.setBounds(176, 45, 242, 24);
-		textField.setText(replaceBlank(contract.getContractName().toString()));
-		contentPane.add(textField);
-		textField.setColumns(10);
+		txf_Name = new JTextField();
+		txf_Name.setEditable(false);
+		txf_Name.setBounds(176, 45, 242, 24);
+		txf_Name.setText(replaceBlank(contract.getContractName().toString()));
+		contentPane.add(txf_Name);
+		txf_Name.setColumns(10);
 		
-		JLabel label_1 = new JLabel("假设");
-		label_1.setBounds(37, 81, 72, 18);
-		contentPane.add(label_1);
+		JLabel lbl_Assume = new JLabel("假设");
+		lbl_Assume.setBounds(37, 81, 72, 18);
+		contentPane.add(lbl_Assume);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(37, 112, 381, 98);
-		textArea.setText(replaceBlank(contract.getAssume()));
-		contentPane.add(textArea);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(37, 112, 381, 98);
+		contentPane.add(scrollPane);
 		
-		JLabel label_2 = new JLabel("保证");
-		label_2.setBounds(37, 223, 72, 18);
-		contentPane.add(label_2);
+		JTextArea txa_Assume = new JTextArea();
+		txa_Assume.setEditable(false);
+		txa_Assume.setText(replaceBlank(contract.getAssume().toString()));
+		scrollPane.setViewportView(txa_Assume);
 		
-		JTextArea textArea_1 = new JTextArea();
-		textArea_1.setBounds(37, 260, 381, 123);
-		textArea_1.setText(replaceBlank(contract.getGuarantee()));
-		contentPane.add(textArea_1);
+		JLabel lbl_Guarantee = new JLabel("保证");
+		lbl_Guarantee.setBounds(37, 223, 72, 18);
+		contentPane.add(lbl_Guarantee);
 		
-		JLabel label_3 = new JLabel("求精分解");
-		label_3.setBounds(37, 396, 72, 18);
-		contentPane.add(label_3);
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(37, 258, 381, 98);
+		contentPane.add(scrollPane_1);
 		
-		JTextArea textArea_2 = new JTextArea();
-		textArea_2.setBounds(37, 427, 381, 78);
-		textArea_2.setText(replaceBlank(contract.getRefinedby()));
-		contentPane.add(textArea_2);
+		JTextArea txa_Guarantee = new JTextArea();
+		txa_Guarantee.setEditable(false);
+		txa_Guarantee.setText(replaceBlank(contract.getGuarantee().toString()));
+		scrollPane_1.setViewportView(txa_Guarantee);
 		
-		JButton button_1 = new JButton("退出");
-		button_1.addActionListener(new ActionListener() {
+		JLabel lbl_Refined = new JLabel("求精分解");
+		lbl_Refined.setBounds(37, 396, 72, 18);
+		contentPane.add(lbl_Refined);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(37, 427, 381, 78);
+		contentPane.add(scrollPane_2);
+		
+		JTextArea txa_Refined = new JTextArea();
+		txa_Refined.setEditable(false);
+		txa_Refined.setText(replaceBlank(contract.getRefinedby().toString()));
+		scrollPane_2.setViewportView(txa_Refined);
+		
+		JButton bt_Exit = new JButton("退出");
+		bt_Exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		button_1.setBounds(160, 532, 113, 27);
-		contentPane.add(button_1);
+		bt_Exit.setBounds(160, 532, 113, 27);
+		contentPane.add(bt_Exit);
 		
 	}
 	private static String replaceBlank(String str)

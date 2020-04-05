@@ -44,11 +44,11 @@ public class ContractRefinementEntry implements IObjectActionDelegate {
 	@Override
 	public void run(IAction iaction) {
 		// TODO Auto-generated method stub
-		MainFrame2 mf = new MainFrame2(sysimpl);
+		//MainFrame2 mf = new MainFrame2(sysimpl);
 		System.out.println("1  "+_si);
 		System.out.println("2  "+sysimpl.getType().getFullName());
 		System.out.println("3  "+sysimpl.getAllSubcomponents().get(0).getSubcomponentType().getFullName());
-		mf.setVisible(true);
+		//mf.setVisible(false);
 		preCprjCreate();
 		OcraRunner ocraRunner = new OcraRunner();
 		CheckContractRefinement CCR = new CheckContractRefinement();

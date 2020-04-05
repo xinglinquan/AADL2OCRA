@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import javax.swing.JLabel;
 
 public class CheckResult extends JFrame {
 
@@ -26,7 +27,7 @@ public class CheckResult extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CheckResult frame = new CheckResult(null);
+					CheckResult frame = new CheckResult(null,null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -38,26 +39,34 @@ public class CheckResult extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CheckResult(List<String> result) {
+	public CheckResult(List<String> result,List<String> error) {
 		setTitle("验证结果");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 640, 475);
+		setBounds(100, 100, 1200, 800);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JLabel label = new JLabel("验证信息");
+		label.setBounds(260, 13, 89, 40);
+		contentPane.add(label);
+		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(15, 15, 593, 351);
+		scrollPane.setBounds(15, 66, 560, 630);
 		contentPane.add(scrollPane);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		textArea.setEditable(false);
-		scrollPane.setViewportView(textArea);
+		JTextArea txa_result = new JTextArea();
+		txa_result.setFont(new Font("Monospaced", Font.PLAIN, 15));
+		txa_result.setEditable(false);
+		scrollPane.setViewportView(txa_result);
 		for(int i =18;i<result.size();i++) {
-			textArea.append(result.get(i)+"\n");
+			txa_result.append(result.get(i)+"\n");
 		}
+		
+		JLabel label_1 = new JLabel("错误信息");
+		label_1.setBounds(861, 19, 89, 29);
+		contentPane.add(label_1);
 		
 		JButton btnNewButton = new JButton("退出");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -65,7 +74,19 @@ public class CheckResult extends JFrame {
 				dispose();
 			}
 		});
-		btnNewButton.setBounds(246, 379, 113, 27);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(608, 66, 560, 630);
+		contentPane.add(scrollPane_1);
+		
+		JTextArea txa_error = new JTextArea();
+		txa_error.setFont(new Font("Monospaced", Font.PLAIN, 15));
+		txa_error.setEditable(false);
+		scrollPane_1.setViewportView(txa_error);
+		for(int i =0;i<error.size();i++) {
+			txa_error.append(error.get(i)+"\n");
+		}
+		btnNewButton.setBounds(535, 713, 113, 27);
 		contentPane.add(btnNewButton);		
 	}
 }

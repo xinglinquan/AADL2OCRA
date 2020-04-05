@@ -8,6 +8,7 @@ public class CheckContractRefinement extends OcraFunction{
 		//if( getContractModel() != null ){
 			//cmd+=" -i "+getContractModel();
 		//}
+		commands.add("set on_failure_script_quits");
 		commands.add(cmd);
 		commands.add("quit");
 	}

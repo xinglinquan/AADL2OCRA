@@ -49,18 +49,18 @@ public class SearchContract extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(62, 71, 155, 24);
-		contentPane.add(comboBox);
-		initcomboBox(comboBox);
-		JButton button = new JButton("查看详情");
-		button.addActionListener(new ActionListener() {
+		JComboBox cbb_Contract = new JComboBox();
+		cbb_Contract.setBounds(62, 71, 155, 24);
+		contentPane.add(cbb_Contract);
+		initcomboBox(cbb_Contract);
+		JButton bt_Check = new JButton("查看详情");
+		bt_Check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(comboBox.getSelectedItem().toString()==null)
+				if(cbb_Contract.getSelectedItem().toString()==null)
 					JOptionPane.showMessageDialog(null, "请选择一个契约！", "", JOptionPane.ERROR_MESSAGE);
 				else {
 					for(ContractUtils contract:contractList) {
-						if(contract.getContractName().equals(comboBox.getSelectedItem().toString())) {
+						if(contract.getContractName().equals(cbb_Contract.getSelectedItem().toString())) {
 							Contract_Info contract_info = new Contract_Info(contract);
 							contract_info.setVisible(true);
 							break;
@@ -70,17 +70,17 @@ public class SearchContract extends JFrame {
 				}
 			}
 		});
-		button.setBounds(280, 70, 113, 27);
-		contentPane.add(button);
+		bt_Check.setBounds(280, 70, 113, 27);
+		contentPane.add(bt_Check);
 		
-		JButton button_1 = new JButton("退出");
-		button_1.addActionListener(new ActionListener() {
+		JButton bt_Exit = new JButton("退出");
+		bt_Exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		button_1.setBounds(166, 188, 113, 27);
-		contentPane.add(button_1);
+		bt_Exit.setBounds(166, 188, 113, 27);
+		contentPane.add(bt_Exit);
 	}
 	public void initcomboBox(JComboBox<String> comboBox) {
 		comboBox.removeAllItems();
