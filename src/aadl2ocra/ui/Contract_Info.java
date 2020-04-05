@@ -3,6 +3,8 @@ package aadl2ocra.ui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -55,7 +57,7 @@ public class Contract_Info extends JFrame {
 		
 		textField = new JTextField();
 		textField.setBounds(176, 45, 242, 24);
-		textField.setText(contract.getContractName());
+		textField.setText(replaceBlank(contract.getContractName().toString()));
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
@@ -65,7 +67,7 @@ public class Contract_Info extends JFrame {
 		
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(37, 112, 381, 98);
-		textArea.setText(contract.getAssume());
+		textArea.setText(replaceBlank(contract.getAssume()));
 		contentPane.add(textArea);
 		
 		JLabel label_2 = new JLabel("保证");
@@ -74,7 +76,7 @@ public class Contract_Info extends JFrame {
 		
 		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setBounds(37, 260, 381, 123);
-		textArea_1.setText(contract.getGuarantee());
+		textArea_1.setText(replaceBlank(contract.getGuarantee()));
 		contentPane.add(textArea_1);
 		
 		JLabel label_3 = new JLabel("求精分解");
@@ -83,7 +85,7 @@ public class Contract_Info extends JFrame {
 		
 		JTextArea textArea_2 = new JTextArea();
 		textArea_2.setBounds(37, 427, 381, 78);
-		textArea_2.setText(contract.getRefinedby());
+		textArea_2.setText(replaceBlank(contract.getRefinedby()));
 		contentPane.add(textArea_2);
 		
 		JButton button_1 = new JButton("退出");
@@ -95,5 +97,12 @@ public class Contract_Info extends JFrame {
 		button_1.setBounds(160, 532, 113, 27);
 		contentPane.add(button_1);
 		
+	}
+	private static String replaceBlank(String str)
+	{
+		  Pattern pt=Pattern.compile("^\\s*|\\s*$");
+		  Matcher mt=pt.matcher(str);
+		  str=mt.replaceAll("");
+		  return str;
 	}
 }
