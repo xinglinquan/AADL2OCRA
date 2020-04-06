@@ -28,7 +28,6 @@ import org.osate.workspace.IAadlProject;
 import aadl2ocra.generator.Generation;
 import aadl2ocra.tool.OcraRunner;
 import aadl2ocra.ui.MainFrame;
-import aadl2ocra.ui.MainFrame2;
 import aadl2ocra.function.CheckContractRefinement;
 import aadl2ocra.generator.*;
 

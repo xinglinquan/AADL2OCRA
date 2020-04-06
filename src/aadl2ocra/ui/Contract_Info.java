@@ -44,7 +44,7 @@ public class Contract_Info extends JFrame {
 	 * Create the frame.
 	 */
 	public Contract_Info(ContractUtils contract) {
-		setTitle(contract.getContractName()+"的详情");
+		setTitle(contract.getContractName()+"������");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 655);
 		contentPane = new JPanel();
@@ -52,7 +52,7 @@ public class Contract_Info extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lbl_ContractName = new JLabel("契约名称");
+		JLabel lbl_ContractName = new JLabel("\u5951\u7EA6\u540D\u79F0");
 		lbl_ContractName.setBounds(37, 48, 72, 18);
 		contentPane.add(lbl_ContractName);
 		
@@ -63,7 +63,7 @@ public class Contract_Info extends JFrame {
 		contentPane.add(txf_Name);
 		txf_Name.setColumns(10);
 		
-		JLabel lbl_Assume = new JLabel("假设");
+		JLabel lbl_Assume = new JLabel("\u5047\u8BBE");
 		lbl_Assume.setBounds(37, 81, 72, 18);
 		contentPane.add(lbl_Assume);
 		
@@ -76,7 +76,7 @@ public class Contract_Info extends JFrame {
 		txa_Assume.setText(replaceBlank(contract.getAssume().toString()));
 		scrollPane.setViewportView(txa_Assume);
 		
-		JLabel lbl_Guarantee = new JLabel("保证");
+		JLabel lbl_Guarantee = new JLabel("\u4FDD\u8BC1");
 		lbl_Guarantee.setBounds(37, 223, 72, 18);
 		contentPane.add(lbl_Guarantee);
 		
@@ -89,7 +89,7 @@ public class Contract_Info extends JFrame {
 		txa_Guarantee.setText(replaceBlank(contract.getGuarantee().toString()));
 		scrollPane_1.setViewportView(txa_Guarantee);
 		
-		JLabel lbl_Refined = new JLabel("求精分解");
+		JLabel lbl_Refined = new JLabel("\u6C42\u7CBE\u5206\u89E3");
 		lbl_Refined.setBounds(37, 396, 72, 18);
 		contentPane.add(lbl_Refined);
 		
@@ -102,7 +102,7 @@ public class Contract_Info extends JFrame {
 		txa_Refined.setText(replaceBlank(contract.getRefinedby().toString()));
 		scrollPane_2.setViewportView(txa_Refined);
 		
-		JButton bt_Exit = new JButton("退出");
+		JButton bt_Exit = new JButton("\u9000\u51FA");
 		bt_Exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

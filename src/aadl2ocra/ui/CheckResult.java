@@ -40,7 +40,7 @@ public class CheckResult extends JFrame {
 	 * Create the frame.
 	 */
 	public CheckResult(List<String> result,List<String> error) {
-		setTitle("验证结果");
+		setTitle("\u9A8C\u8BC1\u7ED3\u679C");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1200, 800);
 		contentPane = new JPanel();
@@ -48,7 +48,7 @@ public class CheckResult extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel label = new JLabel("验证信息");
+		JLabel label = new JLabel("\u9A8C\u8BC1\u4FE1\u606F");
 		label.setBounds(260, 13, 89, 40);
 		contentPane.add(label);
 		
@@ -64,11 +64,11 @@ public class CheckResult extends JFrame {
 			txa_result.append(result.get(i)+"\n");
 		}
 		
-		JLabel label_1 = new JLabel("错误信息");
+		JLabel label_1 = new JLabel("\u9519\u8BEF\u4FE1\u606F");
 		label_1.setBounds(861, 19, 89, 29);
 		contentPane.add(label_1);
 		
-		JButton btnNewButton = new JButton("退出");
+		JButton btnNewButton = new JButton("\u9000\u51FA");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();

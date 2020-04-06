@@ -40,7 +40,7 @@ public class SearchContract extends JFrame {
 	 * Create the frame.
 	 */
 	public SearchContract(String name,ArrayList<ContractUtils> list) {
-		setTitle(name+"çš„å¥‘çº¦");
+		setTitle(name+"µÄÆõÔ¼");
 		contractList = list;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -53,11 +53,11 @@ public class SearchContract extends JFrame {
 		cbb_Contract.setBounds(62, 71, 155, 24);
 		contentPane.add(cbb_Contract);
 		initcomboBox(cbb_Contract);
-		JButton bt_Check = new JButton("æŸ¥çœ‹è¯¦æƒ…");
+		JButton bt_Check = new JButton("\u67E5\u770B\u8BE6\u60C5");
 		bt_Check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(cbb_Contract.getSelectedItem().toString()==null)
-					JOptionPane.showMessageDialog(null, "è¯·é€‰æ‹©ä¸€ä¸ªå¥‘çº¦ï¼", "", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "ÇëÑ¡ÔñÒ»¸öÆõÔ¼£¡", "", JOptionPane.ERROR_MESSAGE);
 				else {
 					for(ContractUtils contract:contractList) {
 						if(contract.getContractName().equals(cbb_Contract.getSelectedItem().toString())) {
@@ -73,7 +73,7 @@ public class SearchContract extends JFrame {
 		bt_Check.setBounds(280, 70, 113, 27);
 		contentPane.add(bt_Check);
 		
-		JButton bt_Exit = new JButton("é€€å‡º");
+		JButton bt_Exit = new JButton("\u9000\u51FA");
 		bt_Exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

@@ -1,2 +1,6 @@
 eclipse.preferences.version=1
+encoding//src/aadl2ocra/ui=GBK
+encoding//src/aadl2ocra/ui/CheckResult.java=GBK
+encoding//src/aadl2ocra/ui/Contract_Info.java=GBK
+encoding//src/aadl2ocra/ui/SearchContract.java=GBK
 encoding/<project>=UTF-8

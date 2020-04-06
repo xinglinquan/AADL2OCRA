@@ -33,7 +33,7 @@ public class Contract extends JFrame {
 	public ArrayList<String> aadlContentList = new ArrayList<>();
 	public String filePath = null;
 	private JTextField txf_Name;
-	HashMap<String,ArrayList<ContractUtils>> ContractMap = new HashMap<String,ArrayList<ContractUtils>>();//ç»„ä»¶åˆ°å…¶å¥‘çº¦çš„æ˜ å°„
+	HashMap<String,ArrayList<ContractUtils>> ContractMap = new HashMap<String,ArrayList<ContractUtils>>();//½¨Á¢×é¼şºÍÆäÆõÔ¼µÄÓ³Éä
 	HashMap<String,String> map2 = new HashMap<String,String>();
 	/*
 	 * Launch the application.
@@ -73,11 +73,11 @@ public class Contract extends JFrame {
 		}
 		initcomboBox(cbb_Component);
 		contentPane.add(cbb_Component);
-		JButton bt_Check = new JButton("æŸ¥çœ‹å¥‘çº¦");
+		JButton bt_Check = new JButton("\u67E5\u770B\u5951\u7EA6");
 		bt_Check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(cbb_Component.getSelectedItem().toString()==null)
-					JOptionPane.showMessageDialog(null, "è¯·é€‰æ‹©ä¸€ä¸ªç»„ä»¶ï¼", "", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "ÇëÑ¡ÔñÒ»¸ö×é¼ş", "", JOptionPane.ERROR_MESSAGE);
 				else {
 					ArrayList<ContractUtils> contractList;
 					if(ContractMap.containsKey(cbb_Component.getSelectedItem().toString())) {
@@ -92,14 +92,14 @@ public class Contract extends JFrame {
 		});
 		bt_Check.setBounds(305, 13, 113, 27);
 		contentPane.add(bt_Check);
-		JLabel lbl_ContractName = new JLabel("å¥‘çº¦åç§°");
+		JLabel lbl_ContractName = new JLabel("\u5951\u7EA6\u540D\u79F0");
 		lbl_ContractName.setBounds(24, 63, 107, 18);
 		contentPane.add(lbl_ContractName);
 		txf_Name = new JTextField();
 		txf_Name.setBounds(132, 60, 286, 24);
 		contentPane.add(txf_Name);
 		txf_Name.setColumns(10);
-		JLabel lbl_Assume = new JLabel("å‡è®¾");
+		JLabel lbl_Assume = new JLabel("\u5047\u8BBE");
 		lbl_Assume.setBounds(24, 94, 72, 18);
 		contentPane.add(lbl_Assume);
 		JScrollPane scrollPane = new JScrollPane();
@@ -108,7 +108,7 @@ public class Contract extends JFrame {
 		
 		JTextArea txa_Assume = new JTextArea();
 		scrollPane.setViewportView(txa_Assume);
-		JLabel lbl_Guarantee = new JLabel("ä¿è¯");
+		JLabel lbl_Guarantee = new JLabel("\u4FDD\u8BC1");
 		lbl_Guarantee.setBounds(24, 238, 72, 18);
 		contentPane.add(lbl_Guarantee);
 		
@@ -119,7 +119,7 @@ public class Contract extends JFrame {
 		JTextArea txa_Guarantee = new JTextArea();
 		scrollPane_1.setViewportView(txa_Guarantee);
 		
-		JLabel lbl_Refined = new JLabel("æ±‚ç²¾åˆ†è§£");
+		JLabel lbl_Refined = new JLabel("\u6C42\u7CBE\u5206\u89E3");
 		lbl_Refined.setBounds(24, 366, 89, 18);
 		contentPane.add(lbl_Refined);
 		
@@ -139,17 +139,17 @@ public class Contract extends JFrame {
 			searchRefinedBy(str);
 		}	
 		
-		JButton bt_Add = new JButton("æ·»åŠ å¥‘çº¦");
+		JButton bt_Add = new JButton("\u6DFB\u52A0\u5951\u7EA6");
 		bt_Add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(cbb_Component.getSelectedItem().toString()==null)
-					JOptionPane.showMessageDialog(null, "è¯·é€‰æ‹©ä¸€ä¸ªç»„ä»¶ï¼", "", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "×é¼şÃû²»ÄÜÎª¿Õ£¡", "", JOptionPane.ERROR_MESSAGE);
 				if(txf_Name.getText().isEmpty())
-					JOptionPane.showMessageDialog(null, "å¥‘çº¦åä¸èƒ½ä¸ºç©ºï¼", "", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "ÆõÔ¼Ãû³Æ²»ÄÜÎª¿Õ£¡", "", JOptionPane.ERROR_MESSAGE);
 				if(txa_Assume.getText().isEmpty())
-					JOptionPane.showMessageDialog(null, "Assumeä¸èƒ½ä¸ºç©ºï¼", "", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "¼ÙÉè²»ÄÜÎª¿Õ£¡", "", JOptionPane.ERROR_MESSAGE);
 				if(txa_Guarantee.getText().isEmpty())
-					JOptionPane.showMessageDialog(null, "Guaranteeä¸èƒ½ä¸ºç©ºï¼", "", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "±£Ö¤²»ÄÜÎª¿Õ£¡", "", JOptionPane.ERROR_MESSAGE);
 				StringBuilder contract =  new StringBuilder();
 				String name = txf_Name.getText().toString();
 				String assume = txa_Assume.getText().toString();
@@ -175,7 +175,7 @@ public class Contract extends JFrame {
 					contract.append("\t\t\t\t"+"guarantee: "+contractutils.getGuarantee()+";\n");
 				}
 				contract.append("\t\t\t\t"+"\";\n");
-				boolean judge=false;//åˆ¤æ–­æ˜¯å¦éœ€è¦å†™RefinedBy
+				boolean judge=false;//ÅĞ¶ÏÊÇ·ñĞèÒªRefinedBy
 				for(ContractUtils contractutils : contractList) {
 					if(!contractutils.getRefinedby().isEmpty()) {
 						contract.append("\t\t\t"+"OCRA::RefinedBy=>\"\n");
@@ -203,7 +203,7 @@ public class Contract extends JFrame {
 				txa_Assume.setText("");
 				txa_Guarantee.setText("");
 				txa_Refined.setText("");
-				JOptionPane.showMessageDialog(null, "æ·»åŠ æˆåŠŸï¼");
+				JOptionPane.showMessageDialog(null, "Ìí¼Ó³É¹¦");
 			}
 		});
 		bt_Add.setBounds(155, 521, 113, 27);
