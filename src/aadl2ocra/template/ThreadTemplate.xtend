@@ -3,10 +3,11 @@ package aadl2ocra.template
 import org.osate.aadl2.ThreadImplementation
 import org.osate.aadl2.PropertyAssociation
 import org.osate.aadl2.impl.StringLiteralImpl
+import aadl2ocra.utils.StringUtils
 
 class ThreadTemplate {
 	def static genThread(ThreadImplementation thread)'''
-		COMPONENT «thread.name»
+		COMPONENT «StringUtils.convertPoint(thread.name)»
 	    «IF thread.allFeatures.size > 0»
 		INTERFACE
 		«FeatureTemplate.genFeature(thread.allFeatures)»
@@ -15,7 +16,7 @@ class ThreadTemplate {
 	    «IF thread.allSubcomponents.size >0»
 		REFINEMENT
 	    «FOR component:thread.allSubcomponents»
-		SUB «component.name» : «component.getComponentImplementation.name»;
+		SUB «component.name» : «StringUtils.convertPoint(component.getComponentImplementation.name)»;
 	    «ENDFOR»
 	    «ENDIF»
 	    «IF thread.allConnections.size >0»

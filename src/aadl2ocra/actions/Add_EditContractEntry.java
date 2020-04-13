@@ -7,6 +7,7 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
 import aadl2ocra.ui.Contract;
+import aadl2ocra.ui.Start;
 
 import org.eclipse.core.resources.IFile;
 
@@ -15,8 +16,10 @@ public class Add_EditContractEntry implements IObjectActionDelegate{
 	@Override
 	public void run(IAction arg0) {
 		// TODO Auto-generated method stub
-		Contract con = new Contract(get_IFile());
-		con.setVisible(true);
+		//Contract con = new Contract(get_IFile());
+		//con.setVisible(true);
+		Start start = new Start(get_IFile());
+		start.setVisible(true);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package aadl2ocra.template;
 import aadl2ocra.template.ConnectionTemplate;
 import aadl2ocra.template.FeatureTemplate;
 import aadl2ocra.template.ThreadTemplate;
+import aadl2ocra.utils.StringUtils;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.osate.aadl2.ModalPropertyValue;
@@ -20,8 +21,8 @@ public class ProcessTemplate {
   public static CharSequence genProcess(final ProcessImplementation process) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("COMPONENT ");
-    String _name = process.getName();
-    _builder.append(_name);
+    String _convertPoint = StringUtils.convertPoint(process.getName());
+    _builder.append(_convertPoint);
     _builder.newLineIfNotEmpty();
     {
       int _size = process.getAllFeatures().size();
@@ -48,11 +49,11 @@ public class ProcessTemplate {
           EList<Subcomponent> _allSubcomponents = process.getAllSubcomponents();
           for(final Subcomponent component : _allSubcomponents) {
             _builder.append("SUB ");
-            String _name_1 = component.getName();
-            _builder.append(_name_1);
+            String _name = component.getName();
+            _builder.append(_name);
             _builder.append(" : ");
-            String _name_2 = component.getComponentImplementation().getName();
-            _builder.append(_name_2);
+            String _convertPoint_1 = StringUtils.convertPoint(component.getComponentImplementation().getName());
+            _builder.append(_convertPoint_1);
             _builder.append(";");
             _builder.newLineIfNotEmpty();
           }

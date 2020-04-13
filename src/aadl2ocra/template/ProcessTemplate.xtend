@@ -5,6 +5,7 @@ import org.osate.aadl2.ProcessImplementation
 import org.osate.aadl2.ThreadImplementation
 import org.osate.aadl2.PropertyAssociation
 import org.osate.aadl2.impl.StringLiteralImpl
+import aadl2ocra.utils.StringUtils
 
 class ProcessTemplate {
 	//def static genProcess(ProcessSubcomponent processSubcomponent){
@@ -12,7 +13,7 @@ class ProcessTemplate {
 		//System.out.println()
 	//}
 	def static genProcess(ProcessImplementation process)'''
-		COMPONENT «process.name»
+		COMPONENT «StringUtils.convertPoint(process.name)»
 	    «IF process.allFeatures.size > 0»
 		INTERFACE
 		«FeatureTemplate.genFeature(process.allFeatures)»
@@ -21,7 +22,7 @@ class ProcessTemplate {
 	    «IF process.allSubcomponents.size >0»
 		REFINEMENT
 	    «FOR component:process.allSubcomponents»
-		SUB «component.name» : «component.getComponentImplementation.name»;
+		SUB «component.name» : «StringUtils.convertPoint(component.getComponentImplementation.name)»;
 	    «ENDFOR»
 	    «ENDIF»
 	    «IF process.allConnections.size >0»
