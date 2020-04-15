@@ -2,30 +2,26 @@ package aadl2ocra.ui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import aadl2ocra.utils.PortUtils;
-
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
-import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class AddTerm extends JFrame {
+public class AddAtom extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JLabel lblTimeutil;
 	private JComboBox<String> cbb_term;
 	private JComboBox<String> cbb_op;
 	private JComboBox<String> cbb_term2;
 	private JComboBox<String> cbb_term3;
 	private JComboBox<String> cbb_op2;
+	private JComboBox<String> cbb_term4;
 
 	/**
 	 * Launch the application.
@@ -34,7 +30,7 @@ public class AddTerm extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddTerm frame = new AddTerm();
+					AddAtom frame = new AddAtom();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,109 +42,109 @@ public class AddTerm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddTerm() {
-		setTitle("\u6DFB\u52A0\u7B97\u672F\u8868\u8FBE\u5F0F");
+	public AddAtom() {
+		setTitle("\u6DFB\u52A0\u5E03\u5C14\u8868\u8FBE\u5F0F");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 496, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel label = new JLabel("\u9009\u62E9\u8868\u8FBE\u5F0F");
-		label.setBounds(43, 38, 93, 18);
+		label.setBounds(112, 25, 93, 18);
 		contentPane.add(label);
 		
+		JLabel label_1 = new JLabel("\u9009\u62E9\u8868\u8FBE\u5F0F");
+		label_1.setBounds(359, 25, 93, 18);
+		contentPane.add(label_1);
+		
 		cbb_term = new JComboBox<String>();
-		cbb_term.setBounds(43, 82, 129, 18);
+		cbb_term.setBounds(92, 69, 129, 18);
 		contentPane.add(cbb_term);
 		
 		cbb_op = new JComboBox<String>();
-		cbb_op.setBounds(186, 82, 74, 18);
+		cbb_op.setBounds(235, 69, 74, 18);
 		contentPane.add(cbb_op);
 		
-		JLabel label_1 = new JLabel("\u9009\u62E9\u8868\u8FBE\u5F0F");
-		label_1.setBounds(284, 38, 101, 18);
-		contentPane.add(label_1);
-		
 		cbb_term2 = new JComboBox<String>();
-		cbb_term2.setBounds(274, 82, 129, 18);
+		cbb_term2.setBounds(323, 69, 129, 18);
 		contentPane.add(cbb_term2);
 		
+		lblTimeutil = new JLabel("time_until");
+		lblTimeutil.setBounds(14, 151, 72, 18);
+		contentPane.add(lblTimeutil);
+		
 		JLabel label_2 = new JLabel("\u9009\u62E9\u8868\u8FBE\u5F0F");
-		label_2.setBounds(43, 137, 93, 18);
+		label_2.setBounds(112, 114, 93, 18);
 		contentPane.add(label_2);
 		
+		JLabel label_3 = new JLabel("\u9009\u62E9\u8868\u8FBE\u5F0F");
+		label_3.setBounds(359, 114, 93, 18);
+		contentPane.add(label_3);
+		
 		cbb_term3 = new JComboBox<String>();
-		cbb_term3.setBounds(43, 168, 129, 18);
+		cbb_term3.setBounds(92, 151, 129, 18);
 		contentPane.add(cbb_term3);
 		
 		cbb_op2 = new JComboBox<String>();
-		cbb_op2.setBounds(186, 168, 74, 18);
+		cbb_op2.setBounds(235, 151, 74, 18);
 		contentPane.add(cbb_op2);
 		
-		JLabel label_3 = new JLabel("\u8F93\u5165\u5E38\u6570");
-		label_3.setBounds(284, 137, 72, 18);
-		contentPane.add(label_3);
+		cbb_term4 = new JComboBox<String>();
+		cbb_term4.setBounds(323, 151, 129, 18);
+		contentPane.add(cbb_term4);
 		init();
-		textField = new JTextField();
-		textField.setBounds(274, 165, 129, 24);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		
-		JButton button = new JButton("\u6DFB\u52A0");
-		button.addActionListener(new ActionListener() {
+		JButton bt_addatom = new JButton("\u6DFB\u52A0");
+		bt_addatom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(cbb_term.getSelectedItem().toString()!=""&&cbb_term2.getSelectedItem().toString()!=""&&cbb_op.getSelectedItem().toString()!="") {
 					String term = cbb_term.getSelectedItem().toString()+cbb_op.getSelectedItem().toString()+cbb_term2.getSelectedItem().toString();
-					AddContract.term.add(term);
 					AddContract.atom.add(term);
 					AddContract.constraint.add(term);
-					AddContract.txa_term.append(term+"\n");
 					AddContract.txa_atom.append(term+"\n");
 					AddContract.txa_constraint.append(term+"\n");
-					cbb_term.addItem(term);
-					cbb_term2.addItem(term);
-					cbb_term3.addItem(term);
 				}
-				if(cbb_term3.getSelectedItem().toString()!=""&&textField.toString()!=""&&cbb_op2.getSelectedItem().toString()!="") {
-					String term = cbb_term3.getSelectedItem().toString()+cbb_op2.getSelectedItem().toString()+textField.toString();
-					AddContract.term.add(term);
+				if(cbb_term3.getSelectedItem().toString()!=""&&cbb_term4.getSelectedItem().toString()!=""&&cbb_op2.getSelectedItem().toString()!="") {
+					String term = "time_until("+cbb_term3.getSelectedItem().toString()+")"+cbb_op2.getSelectedItem().toString()+cbb_term4.getSelectedItem().toString();
 					AddContract.atom.add(term);
 					AddContract.constraint.add(term);
-					AddContract.txa_term.append(term+"\n");
 					AddContract.txa_atom.append(term+"\n");
 					AddContract.txa_constraint.append(term+"\n");
-					cbb_term.addItem(term);
-					cbb_term2.addItem(term);
-					cbb_term3.addItem(term);
 				}
 			}
 		});
-		button.setBounds(290, 213, 113, 27);
-		contentPane.add(button);
+		bt_addatom.setBounds(339, 196, 113, 27);
+		contentPane.add(bt_addatom);
 	}
 	public void init() {
 		cbb_term.removeAllItems();
 		cbb_term2.removeAllItems();
 		cbb_term3.removeAllItems();
+		cbb_term4.removeAllItems();
 		cbb_term.addItem("");
 		cbb_term2.addItem("");
 		cbb_term3.addItem("");
+		cbb_term4.addItem("");
 		cbb_op.addItem("");
 		cbb_op2.addItem("");
 		for(String temp : AddContract.term) {
 			cbb_term.addItem(temp);
 			cbb_term2.addItem(temp);
 			cbb_term3.addItem(temp);
+			cbb_term4.addItem(temp);
 		}
-		cbb_op.addItem("+");
-		cbb_op.addItem("-");
-		cbb_op.addItem("*");
-		cbb_op.addItem("/");
-		cbb_op2.addItem("+");
-		cbb_op2.addItem("-");
-		cbb_op2.addItem("*");
-		cbb_op2.addItem("/");
+		cbb_op.addItem("=");
+		cbb_op.addItem("!=");
+		cbb_op.addItem("<");
+		cbb_op.addItem(">");
+		cbb_op.addItem("<=");
+		cbb_op.addItem(">=");
+		cbb_op2.addItem("=");
+		cbb_op2.addItem("!=");
+		cbb_op2.addItem("<");
+		cbb_op2.addItem(">");
+		cbb_op2.addItem("<=");
+		cbb_op2.addItem(">=");
 	}
 }

@@ -26,8 +26,8 @@ import java.awt.event.ActionEvent;
 public class Start extends JFrame {
 
 	private JPanel contentPane;
-	public ArrayList<String> aadlContentList = new ArrayList<>();
-	public String filePath = null;
+	public static ArrayList<String> aadlContentList = new ArrayList<>();
+	public static String filePath = null;
 	public static HashMap<String,ArrayList<ContractUtils>> ContractMap = new HashMap<String,ArrayList<ContractUtils>>();//建立组件和其契约的映射
 	public static HashMap<String,ArrayList<PortUtils>> PortMap = new HashMap<String,ArrayList<PortUtils>>();//建立组件和其端口的映射
 	public static HashMap<String,ArrayList<String>> SubContractMap = new HashMap<String,ArrayList<String>>();//建立组件和子组件契约的映射
@@ -83,6 +83,10 @@ public class Start extends JFrame {
 			String str = cbb_Component.getItemAt(i);
 			searchSubContract(str);
 		}
+		if(ContractMap.containsKey("example1"))
+			System.out.println("11111");
+		else
+			System.out.println("2222");
 		cbb_Component.setBounds(14, 31, 152, 24);
 		contentPane.add(cbb_Component);
 		JButton bt_Check = new JButton("\u67E5\u770B\u5951\u7EA6");
@@ -137,7 +141,7 @@ public class Start extends JFrame {
 		bt_Add.setBounds(363, 30, 113, 27);
 		contentPane.add(bt_Add);
 	}
-	public void loadAADL2List() throws IOException {
+	public static void  loadAADL2List() throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(filePath));
 		String line;
 		while((line = br.readLine())!=null)
