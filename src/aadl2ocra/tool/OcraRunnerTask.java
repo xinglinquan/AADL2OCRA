@@ -11,6 +11,7 @@ import java.util.concurrent.Callable;
 import javax.swing.JFrame;
 
 import aadl2ocra.ui.CheckResult;
+import aadl2ocra.ui.WaitMessage;
 
 public class OcraRunnerTask implements Callable{
 	private String[] cmdArray;
@@ -25,7 +26,7 @@ public class OcraRunnerTask implements Callable{
 		ocraRunnerProcess = Runtime.getRuntime().exec(cmdArray);
 		final StreamReader outputStreamReader = new StreamReader(ocraRunnerProcess.getInputStream());
 		final StreamReader errorStreamReader  = new StreamReader(ocraRunnerProcess.getErrorStream());
-		
+		WaitMessage wm = new WaitMessage();
 		outputStreamReader.start();
 		errorStreamReader.start();
 
@@ -38,6 +39,7 @@ public class OcraRunnerTask implements Callable{
 		List<String> result = outputStreamReader.getReadLines();
 		List<String> error  = errorStreamReader.getReadLines();
 		System.out.println("num"+error.size());
+		wm.dispose();
 		CheckResult checkResult = new CheckResult(result,error);
 		checkResult.setVisible(true);
 		//System.out.println(outputStreamReader.getReadString());

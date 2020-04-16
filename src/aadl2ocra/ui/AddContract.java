@@ -155,24 +155,33 @@ public class AddContract extends JFrame {
 		scrollPane_5.setViewportView(txa_constraint);
 		init(portList,subList);
 		
-		JButton bt_addasumme = new JButton("\u6DFB\u52A0\u7EC6\u8282");
+		JButton bt_addasumme = new JButton("\u6DFB\u52A0\u5185\u5BB9");
 		bt_addasumme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddAssume aa = new AddAssume();
 				aa.setVisible(true);
 			}
 		});
-		bt_addasumme.setBounds(112, 51, 113, 27);
+		bt_addasumme.setBounds(239, 51, 113, 27);
 		contentPane.add(bt_addasumme);
 		
-		JButton bt_addguarantee = new JButton("\u6DFB\u52A0\u7EC6\u8282");
+		JButton bt_addguarantee = new JButton("\u6DFB\u52A0\u5185\u5BB9");
 		bt_addguarantee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddGuarantee ag = new AddGuarantee();
 				ag.setVisible(true);
 			}
 		});
-		bt_addguarantee.setBounds(112, 263, 113, 27);
+		
+		JButton bt_delassume = new JButton("\u6E05\u7A7A");
+		bt_delassume.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				txa_assume.setText("");
+			}
+		});
+		bt_delassume.setBounds(364, 51, 113, 27);
+		contentPane.add(bt_delassume);
+		bt_addguarantee.setBounds(239, 263, 113, 27);
 		contentPane.add(bt_addguarantee);
 		
 		JButton bt_addsub = new JButton("\u6DFB\u52A0\u5B50\u5951\u7EA6");
@@ -185,7 +194,16 @@ public class AddContract extends JFrame {
 						txa_refinedby.append(","+comboBox.getSelectedItem().toString());
 			}
 		});
-		bt_addsub.setBounds(261, 490, 113, 27);
+		
+		JButton bt_delguarantee = new JButton("\u6E05\u7A7A");
+		bt_delguarantee.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txa_guarantee.setText("");
+			}
+		});
+		bt_delguarantee.setBounds(364, 263, 113, 27);
+		contentPane.add(bt_delguarantee);
+		bt_addsub.setBounds(239, 490, 113, 27);
 		contentPane.add(bt_addsub);
 		
 		JButton bt_addterm = new JButton("\u6DFB\u52A0\u7B97\u672F\u8868\u8FBE\u5F0F");
@@ -195,7 +213,16 @@ public class AddContract extends JFrame {
 				at.setVisible(true);
 			}
 		});
-		bt_addterm.setBounds(790, 9, 137, 27);
+		
+		JButton bt_delrefinedby = new JButton("\u6E05\u7A7A");
+		bt_delrefinedby.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txa_refinedby.setText("");
+			}
+		});
+		bt_delrefinedby.setBounds(366, 490, 113, 27);
+		contentPane.add(bt_delrefinedby);
+		bt_addterm.setBounds(663, 9, 137, 27);
 		contentPane.add(bt_addterm);
 		
 		JButton bt_addatom = new JButton("\u6DFB\u52A0\u5E03\u5C14\u8868\u8FBE\u5F0F");
@@ -205,7 +232,21 @@ public class AddContract extends JFrame {
 				aa.setVisible(true);
 			}
 		});
-		bt_addatom.setBounds(790, 232, 137, 27);
+		
+		JButton bt_delterm = new JButton("\u6E05\u7A7A");
+		bt_delterm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txa_term.setText("");
+				term.clear();
+				for(PortUtils port : portList) {
+					term.add(port.getName());
+					txa_term.append(port.getName()+"\n");
+				}
+			}
+		});
+		bt_delterm.setBounds(814, 9, 113, 27);
+		contentPane.add(bt_delterm);
+		bt_addatom.setBounds(663, 232, 137, 27);
 		contentPane.add(bt_addatom);
 		
 		JButton bt_addconstraint = new JButton("\u6DFB\u52A0\u7EA6\u675F");
@@ -215,7 +256,25 @@ public class AddContract extends JFrame {
 				ac.setVisible(true);
 			}
 		});
-		bt_addconstraint.setBounds(790, 449, 137, 27);
+		
+		JButton bt_delatom = new JButton("\u6E05\u7A7A");
+		bt_delatom.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txa_atom.setText("");
+				atom.clear();
+				atom.add("TRUE");
+				txa_atom.append("TRUE\n");
+				atom.add("FALSE");
+				txa_atom.append("FALSE\n");
+				for(String temp : term) {
+					atom.add(temp);
+					txa_atom.append(temp+"\n");
+				}
+			}
+		});
+		bt_delatom.setBounds(814, 232, 113, 27);
+		contentPane.add(bt_delatom);
+		bt_addconstraint.setBounds(663, 449, 137, 27);
 		contentPane.add(bt_addconstraint);
 		JButton bt_addcontract = new JButton("\u6DFB\u52A0\u5951\u7EA6");
 		bt_addcontract.addActionListener(new ActionListener() {
@@ -284,14 +343,44 @@ public class AddContract extends JFrame {
 				JOptionPane.showMessageDialog(null, "Ìí¼Ó³É¹¦");
 			}
 		});
-		bt_addcontract.setBounds(442, 683, 113, 27);
+		
+		JButton bt_delconstraint = new JButton("\u6E05\u7A7A");
+		bt_delconstraint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txa_constraint.setText("");
+				constraint.clear();
+				for(String temp : atom) {
+					constraint.add(temp);
+					txa_constraint.append(temp+"\n");
+				}
+			}
+		});
+		bt_delconstraint.setBounds(814, 449, 113, 27);
+		contentPane.add(bt_delconstraint);
+		bt_addcontract.setBounds(364, 683, 113, 27);
 		contentPane.add(bt_addcontract);
+		
+		JButton bt_delall = new JButton("\u5168\u90E8\u6E05\u7A7A");
+		bt_delall.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				init(portList,subList);
+			}
+		});
+		bt_delall.setBounds(530, 683, 113, 27);
+		contentPane.add(bt_delall);
 
 	}
 	public void init(ArrayList<PortUtils> portList,ArrayList<String> subList) {
 		term.clear();
 		atom.clear();
 		constraint.clear();
+		txf_name.setText("");
+		txa_assume.setText("");
+		txa_guarantee.setText("");
+		txa_refinedby.setText("");
+		txa_term.setText("");
+		txa_atom.setText("");
+		txa_constraint.setText("");
 		for(PortUtils port : portList) {
 			term.add(port.getName());
 			txa_term.append(port.getName()+"\n");
@@ -312,7 +401,7 @@ public class AddContract extends JFrame {
 		for(String temp : subList)
 			comboBox.addItem(temp);
 	}
-	public boolean findProperties(String name) {
+	public static boolean findProperties(String name) {
 		String target1="implementation "+name+".impl";
 		String target2="end "+name+".impl";
 		int length = Start.aadlContentList.size();
@@ -343,7 +432,7 @@ public class AddContract extends JFrame {
 		}
 		return judge;
 	}
-	public void removeAllcontract(String name) {
+	public static void removeAllcontract(String name) {
 		String target1="implementation "+name+".impl";
 		String target2="end "+name+".impl";
 		int length = Start.aadlContentList.size();
@@ -395,7 +484,7 @@ public class AddContract extends JFrame {
 		}
 		System.out.println("after:"+Start.aadlContentList.size());
 	}
-	public void insertContract(String contract,String name) throws IOException {
+	public static void insertContract(String contract,String name) throws IOException {
 		String target = "end "+name+".impl";
 		int length = Start.aadlContentList.size();
 		for(int i=0;i<length;i++)

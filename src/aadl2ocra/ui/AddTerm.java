@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 import aadl2ocra.utils.PortUtils;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -123,6 +124,12 @@ public class AddTerm extends JFrame {
 					cbb_term2.addItem(term);
 					cbb_term3.addItem(term);
 				}
+				cbb_term.setSelectedIndex(0);
+				cbb_term2.setSelectedIndex(0);
+				cbb_term3.setSelectedIndex(0);
+				cbb_op.setSelectedIndex(0);
+				cbb_op2.setSelectedIndex(0);
+				JOptionPane.showMessageDialog(null, "Ìí¼Ó³É¹¦");
 			}
 		});
 		button.setBounds(290, 213, 113, 27);
@@ -146,9 +153,21 @@ public class AddTerm extends JFrame {
 		cbb_op.addItem("-");
 		cbb_op.addItem("*");
 		cbb_op.addItem("/");
+		cbb_op.addItem(" mod ");
+		cbb_op.addItem("[]");
+		cbb_op.addItem("<<");
+		cbb_op.addItem(">>");
+		cbb_op.addItem(" extend ");
+		cbb_op.addItem(" resize ");
 		cbb_op2.addItem("+");
 		cbb_op2.addItem("-");
 		cbb_op2.addItem("*");
 		cbb_op2.addItem("/");
+		cbb_op2.addItem(" mod ");
+		cbb_op2.addItem("[]");
+		cbb_op2.addItem("<<");
+		cbb_op2.addItem(">>");
+		cbb_op2.addItem(" extend ");
+		cbb_op2.addItem(" resize ");
 	}
 }

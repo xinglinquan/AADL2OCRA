@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -56,9 +57,15 @@ public class AddAssume extends JFrame {
 		JButton button = new JButton("\u6DFB\u52A0");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(comboBox.getSelectedItem().toString()!="")
+				if(comboBox.getSelectedItem().toString()!="") {
 					AddContract.txa_assume.append(comboBox.getSelectedItem().toString());
+					comboBox.setSelectedIndex(0);
+					JOptionPane.showMessageDialog(null, "添加成功");
+				}
+				else
+					JOptionPane.showMessageDialog(null, "内容不能为空！", "", JOptionPane.ERROR_MESSAGE);
 			}
+			
 		});
 		button.setBounds(305, 120, 113, 27);
 		contentPane.add(button);

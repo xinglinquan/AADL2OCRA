@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -108,6 +109,12 @@ public class AddConstraint extends JFrame {
 					cbb_con2.addItem(constraint);
 					cbb_con3.addItem(constraint);
 				}
+				cbb_con1.setSelectedIndex(0);
+				cbb_con2.setSelectedIndex(0);
+				cbb_con3.setSelectedIndex(0);
+				cbb_op.setSelectedIndex(0);
+				cbb_op2.setSelectedIndex(0);
+				JOptionPane.showMessageDialog(null, "Ìí¼Ó³É¹¦");
 			}
 		});
 		bt_add.setBounds(305, 202, 113, 27);

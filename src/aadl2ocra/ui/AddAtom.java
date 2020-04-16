@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -45,7 +46,7 @@ public class AddAtom extends JFrame {
 	public AddAtom() {
 		setTitle("\u6DFB\u52A0\u5E03\u5C14\u8868\u8FBE\u5F0F");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 496, 300);
+		setBounds(100, 100, 514, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -60,19 +61,19 @@ public class AddAtom extends JFrame {
 		contentPane.add(label_1);
 		
 		cbb_term = new JComboBox<String>();
-		cbb_term.setBounds(92, 69, 129, 18);
+		cbb_term.setBounds(108, 69, 129, 18);
 		contentPane.add(cbb_term);
 		
 		cbb_op = new JComboBox<String>();
-		cbb_op.setBounds(235, 69, 74, 18);
+		cbb_op.setBounds(251, 69, 74, 18);
 		contentPane.add(cbb_op);
 		
 		cbb_term2 = new JComboBox<String>();
-		cbb_term2.setBounds(323, 69, 129, 18);
+		cbb_term2.setBounds(339, 69, 129, 18);
 		contentPane.add(cbb_term2);
 		
 		lblTimeutil = new JLabel("time_until");
-		lblTimeutil.setBounds(14, 151, 72, 18);
+		lblTimeutil.setBounds(14, 151, 86, 18);
 		contentPane.add(lblTimeutil);
 		
 		JLabel label_2 = new JLabel("\u9009\u62E9\u8868\u8FBE\u5F0F");
@@ -84,15 +85,15 @@ public class AddAtom extends JFrame {
 		contentPane.add(label_3);
 		
 		cbb_term3 = new JComboBox<String>();
-		cbb_term3.setBounds(92, 151, 129, 18);
+		cbb_term3.setBounds(108, 151, 129, 18);
 		contentPane.add(cbb_term3);
 		
 		cbb_op2 = new JComboBox<String>();
-		cbb_op2.setBounds(235, 151, 74, 18);
+		cbb_op2.setBounds(251, 151, 74, 18);
 		contentPane.add(cbb_op2);
 		
 		cbb_term4 = new JComboBox<String>();
-		cbb_term4.setBounds(323, 151, 129, 18);
+		cbb_term4.setBounds(339, 151, 129, 18);
 		contentPane.add(cbb_term4);
 		init();
 		JButton bt_addatom = new JButton("\u6DFB\u52A0");
@@ -112,6 +113,13 @@ public class AddAtom extends JFrame {
 					AddContract.txa_atom.append(term+"\n");
 					AddContract.txa_constraint.append(term+"\n");
 				}
+				cbb_term.setSelectedIndex(0);
+				cbb_term2.setSelectedIndex(0);
+				cbb_term3.setSelectedIndex(0);
+				cbb_term4.setSelectedIndex(0);
+				cbb_op.setSelectedIndex(0);
+				cbb_op2.setSelectedIndex(0);
+				JOptionPane.showMessageDialog(null, "Ìí¼Ó³É¹¦");
 			}
 		});
 		bt_addatom.setBounds(339, 196, 113, 27);

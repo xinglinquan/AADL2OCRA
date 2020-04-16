@@ -19,7 +19,8 @@ import java.awt.event.ActionEvent;
 public class SearchContract extends JFrame {
 
 	private JPanel contentPane;
-	public ArrayList<ContractUtils> contractList;
+	public static ArrayList<ContractUtils> contractList;
+	private static JComboBox<String> cbb_Contract;
 	/**
 	 * Launch the application.
 	 */
@@ -49,10 +50,10 @@ public class SearchContract extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JComboBox cbb_Contract = new JComboBox();
+		cbb_Contract = new JComboBox<String>();
 		cbb_Contract.setBounds(62, 71, 155, 24);
 		contentPane.add(cbb_Contract);
-		initcomboBox(cbb_Contract);
+		initcomboBox();
 		JButton bt_Check = new JButton("\u67E5\u770B\u8BE6\u60C5");
 		bt_Check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -61,7 +62,7 @@ public class SearchContract extends JFrame {
 				else {
 					for(ContractUtils contract:contractList) {
 						if(contract.getContractName().equals(cbb_Contract.getSelectedItem().toString())) {
-							Contract_Info contract_info = new Contract_Info(contract);
+							Contract_Info contract_info = new Contract_Info(name,contract);
 							contract_info.setVisible(true);
 							break;
 						}
@@ -82,10 +83,16 @@ public class SearchContract extends JFrame {
 		bt_Exit.setBounds(166, 188, 113, 27);
 		contentPane.add(bt_Exit);
 	}
-	public void initcomboBox(JComboBox<String> comboBox) {
-		comboBox.removeAllItems();
+	public static void initcomboBox() {
+		cbb_Contract.removeAllItems();
 		for(ContractUtils contract:contractList) {
-			comboBox.addItem(contract.getContractName());
+			cbb_Contract.addItem(contract.getContractName());
+		}
+	}
+	public static void initcomboBox(ArrayList<ContractUtils> contracts) {
+		cbb_Contract.removeAllItems();
+		for(ContractUtils contract:contractList) {
+			cbb_Contract.addItem(contract.getContractName());
 		}
 	}
 }

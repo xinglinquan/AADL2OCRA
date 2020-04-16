@@ -12,10 +12,12 @@ import javax.swing.border.EmptyBorder;
 
 import aadl2ocra.utils.ContractUtils;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 
@@ -31,7 +33,7 @@ public class Contract_Info extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Contract_Info frame = new Contract_Info(null);
+					Contract_Info frame = new Contract_Info(null,null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -43,7 +45,7 @@ public class Contract_Info extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Contract_Info(ContractUtils contract) {
+	public Contract_Info(String name,ContractUtils contract) {
 		setTitle(contract.getContractName()+"的详情");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 655);
@@ -99,7 +101,7 @@ public class Contract_Info extends JFrame {
 		
 		JTextArea txa_Refined = new JTextArea();
 		txa_Refined.setEditable(false);
-		txa_Refined.setText(replaceBlank(contract.getRefinedby().toString()));
+		txa_Refined.setText(replaceBlank(dealrefinedby(contract.getRefinedby().toString())));
 		scrollPane_2.setViewportView(txa_Refined);
 		
 		JButton bt_Exit = new JButton("\u9000\u51FA");
@@ -108,7 +110,60 @@ public class Contract_Info extends JFrame {
 				dispose();
 			}
 		});
-		bt_Exit.setBounds(160, 532, 113, 27);
+		
+		JButton bt_delete = new JButton("\u5220\u9664\u8BE5\u5951\u7EA6");
+		bt_delete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*for(int i =0;i<contractList.size();i++) {
+					if(contractList.get(i).getContractName().equals(contract.getContractName())) {
+						index=i;
+						break;
+					}
+				}*/
+				SearchContract.contractList.remove(contract);
+				Start.ContractMap.put(name, SearchContract.contractList);
+				StringBuilder contracts =  new StringBuilder();
+				if(!AddContract.findProperties(name))
+					contracts.append("\t\t"+"properties"+"\n");
+				contracts.append("\t\t\t"+"OCRA::Contract=>\"\n");
+				for(ContractUtils contractutils : SearchContract.contractList) {
+					contracts.append("\t\t\t\t"+"CONTRACT "+contractutils.getContractName()+"\n");
+					contracts.append("\t\t\t\t"+"assume: "+contractutils.getAssume()+";\n");
+					contracts.append("\t\t\t\t"+"guarantee: "+contractutils.getGuarantee()+";\n");
+				}
+				contracts.append("\t\t\t\t"+"\";\n");
+				boolean judge=false;//判断是否需要RefinedBy
+				for(ContractUtils contractutils : SearchContract.contractList) {
+					if(!contractutils.getRefinedby().isEmpty()) {
+						contracts.append("\t\t\t"+"OCRA::RefinedBy=>\"\n");
+						judge=true;
+						break;
+					}
+				}
+				if(judge) {
+					for(ContractUtils contractutils : SearchContract.contractList) {
+						if(!contractutils.getRefinedby().isEmpty()) {
+							contracts.append("\t\t\t\t"+contractutils.getRefinedby()+";\n");
+						}
+					}
+					contracts.append("\t\t\t\t"+"\";\n");
+				}
+				System.out.println("contract:"+contracts.toString());
+				AddContract.removeAllcontract(name);
+				try {
+					AddContract.insertContract(contracts.toString(),name);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				SearchContract.initcomboBox();
+				JOptionPane.showMessageDialog(null, "删除成功");
+				dispose();
+			}
+		});
+		bt_delete.setBounds(160, 528, 113, 27);
+		contentPane.add(bt_delete);
+		bt_Exit.setBounds(160, 568, 113, 27);
 		contentPane.add(bt_Exit);
 		
 	}
@@ -118,5 +173,9 @@ public class Contract_Info extends JFrame {
 		  Matcher mt=pt.matcher(str);
 		  str=mt.replaceAll("");
 		  return str;
+	}
+	private static String dealrefinedby(String str) {
+		int start = str.indexOf("REFINEDBY");
+		return str.substring(start+9, str.length()-1);
 	}
 }
