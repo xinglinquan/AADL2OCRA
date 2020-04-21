@@ -1,0 +1,519 @@
+COMPONENT GNC_S_impl system
+INTERFACE
+INPUT PORT GNC_Num_photo_Input : real;
+INPUT PORT GNC_Single_time_Input : real;
+INPUT PORT GNC_Signal_Input : boolean;
+INPUT PORT GNC_Corner_1_Input : real;
+INPUT PORT GNC_Corner_2_Input : real;
+INPUT PORT GNC_Targer_speed_Input : real;
+OUTPUT PORT GNC_Power_output : real;
+
+CONTRACT power_limit
+assume: true;
+guarantee: always (GNC_Power_output<100000.0);
+
+REFINEMENT
+SUB LTUS : LTU_S_impl;
+SUB AOCSS : AOCS_S_impl;
+SUB ET : Execution_impl;
+SUB DM : Data_Management_impl;
+SUB PD : power_divider_impl;
+CONNECTION LTUS.LTU_Num_photo_Input := GNC_Num_photo_Input;
+CONNECTION LTUS.LTU_Single_time_Input := GNC_Single_time_Input;
+CONNECTION LTUS.LTU_Signal_Input := GNC_Signal_Input;
+CONNECTION LTUS.LTU_Corner_1_Input := GNC_Corner_1_Input;
+CONNECTION LTUS.LTU_Corner_2_Input := GNC_Corner_2_Input;
+CONNECTION LTUS.LTU_Targer_speed_Input := GNC_Targer_speed_Input;
+CONNECTION AOCSS.LTU_N1_Output := LTUS.LTU_N1_Output;
+CONNECTION AOCSS.LTU_N2_Output := LTUS.LTU_N2_Output;
+CONNECTION AOCSS.LTU_N3_Output := LTUS.LTU_N3_Output;
+CONNECTION AOCSS.LTU_N4_Output := LTUS.LTU_N4_Output;
+CONNECTION AOCSS.LTU_Tire_Final_Outout := LTUS.LTU_Tire_Final_Outout;
+CONNECTION AOCSS.LTU_Change_angle_Output := LTUS.LTU_Change_angle_Output;
+CONNECTION AOCSS.LTU_Final_acceleration_Output := LTUS.LTU_Final_acceleration_Output;
+CONNECTION AOCSS.LTU_Final_Speed_Output := LTUS.LTU_Final_Speed_Output;
+CONNECTION ET.Cosine_change_Out := AOCSS.Cosine_change_Out;
+CONNECTION ET.angular_change_Out := AOCSS.angular_change_Out;
+CONNECTION ET.angle_change_2_Out := AOCSS.angle_change_2_Out;
+CONNECTION ET.add_speed_Out := AOCSS.add_speed_Out;
+CONNECTION ET.down_speed_Out := AOCSS.down_speed_Out;
+CONNECTION PD.Power_All := AOCSS.Power_All;
+CONNECTION GNC_Power_output := PD.Power_output;
+CONNECTION DM.Signal_C_Out := ET.Signal_C_Out;
+CONNECTION DM.Signal_I_Out := ET.Signal_I_Out;
+CONNECTION DM.Signal_E_Out := ET.Signal_E_Out;
+
+--new
+CONNECTION AOCSS.Counteracting_flywheel_Power := ET.Counteracting_flywheel_Power;
+CONNECTION AOCSS.Inject_Power := ET.Inject_Power;
+CONNECTION AOCSS.Engine_Power := ET.Engine_Power;
+
+CONTRACT power_limit REFINEDBY ET.power_limit,AOCSS.power_limit,PD.power_limit;
+ 
+COMPONENT LTU_S_impl
+INTERFACE
+INPUT PORT LTU_Num_photo_Input : real;
+INPUT PORT LTU_Single_time_Input : real;
+INPUT PORT LTU_Signal_Input : boolean;
+INPUT PORT LTU_Corner_1_Input : real;
+INPUT PORT LTU_Corner_2_Input : real;
+INPUT PORT LTU_Targer_speed_Input : real;
+OUTPUT PORT LTU_Tire_Final_Outout : real;
+OUTPUT PORT LTU_Change_angle_Output : real;
+OUTPUT PORT LTU_Final_acceleration_Output : real;
+OUTPUT PORT LTU_Final_Speed_Output : real;
+OUTPUT PORT LTU_N1_Output : real;
+OUTPUT PORT LTU_N2_Output : real;
+OUTPUT PORT LTU_N3_Output : real;
+OUTPUT PORT LTU_N4_Output : real;
+REFINEMENT
+SUB TM : Terminal_model_impl;
+SUB DPUF : DPU_F_impl;
+CONNECTION TM.Num_photo_Input := LTU_Num_photo_Input;
+CONNECTION TM.Single_time_Input := LTU_Single_time_Input;
+CONNECTION TM.Signal_Input := LTU_Signal_Input;
+CONNECTION TM.Corner_1_Input := LTU_Corner_1_Input;
+CONNECTION TM.Corner_2_Input := LTU_Corner_2_Input;
+CONNECTION TM.Targer_speed_Input := LTU_Targer_speed_Input;
+CONNECTION LTU_Tire_Final_Outout := DPUF.Tire_Final_OutPut;
+CONNECTION LTU_Change_angle_Output := DPUF.Change_angle_Output;
+CONNECTION LTU_Final_acceleration_Output := DPUF.Final_acceleration_Output;
+CONNECTION LTU_Final_Speed_Output := DPUF.Final_Speed_Output;
+CONNECTION LTU_N1_Output := DPUF.N1_Output;
+CONNECTION LTU_N2_Output := DPUF.N2_Output;
+CONNECTION LTU_N3_Output := DPUF.N3_Output;
+CONNECTION LTU_N4_Output := DPUF.N4_Output;
+CONNECTION DPUF.Target_Tire_Direction_Output := TM.Target_Tire_Direction_Output;
+CONNECTION DPUF.Actual_angle_Out := TM.Actual_angle_Out;
+CONNECTION DPUF.Target_angle_Out := TM.Target_angle_Out;
+CONNECTION DPUF.Actual_acceleration_Out := TM.Actual_acceleration_Out;
+CONNECTION DPUF.Actual_Out := TM.Actual_Out;
+ 
+COMPONENT Terminal_model_impl
+INTERFACE
+INPUT PORT Num_photo_Input : real;
+INPUT PORT Single_time_Input : real;
+INPUT PORT Signal_Input : boolean;
+INPUT PORT Corner_1_Input : real;
+INPUT PORT Corner_2_Input : real;
+INPUT PORT Targer_speed_Input : real;
+OUTPUT PORT Target_Tire_Direction_Output : real;
+OUTPUT PORT Actual_angle_Out : real;
+OUTPUT PORT Target_angle_Out : real;
+OUTPUT PORT Actual_acceleration_Out : real;
+OUTPUT PORT Actual_Out : real;
+REFINEMENT
+SUB NA_C : Navigation_Camera_impl;
+SUB TO_P : Top_impl;
+SUB STAR_S : star_sensor_impl;
+SUB ACC_MET : Accelerometer_impl;
+SUB SPEED_MET : Speedometer_impl;
+SUB THROT : Throttle_impl;
+CONNECTION NA_C.Num_photo := Num_photo_Input;
+CONNECTION NA_C.Single_time := Single_time_Input;
+CONNECTION TO_P.Signal := Signal_Input;
+CONNECTION STAR_S.Corner_1 := Corner_1_Input;
+CONNECTION STAR_S.Corner_2 := Corner_2_Input;
+CONNECTION SPEED_MET.Targer_speed := Targer_speed_Input;
+CONNECTION ACC_MET.Camera_time := NA_C.Camera_time;
+CONNECTION Target_Tire_Direction_Output := TO_P.Target_Tire_Direction;
+CONNECTION Actual_angle_Out := TO_P.Actual_angle;
+CONNECTION Target_angle_Out := STAR_S.Target_angle;
+CONNECTION Actual_acceleration_Out := ACC_MET.Actual_acceleration;
+CONNECTION ACC_MET.differ_speed := SPEED_MET.Differ_speed;
+CONNECTION THROT.Actuator_Input := SPEED_MET.Actuator_Input;
+CONNECTION SPEED_MET.Actual := THROT.Actual;
+CONNECTION Actual_Out := THROT.Actual;
+ 
+COMPONENT Navigation_Camera_impl
+INTERFACE
+INPUT PORT Num_photo : real;
+INPUT PORT Single_time : real;
+OUTPUT PORT Camera_time : real;
+ 
+    	
+COMPONENT Top_impl
+INTERFACE
+INPUT PORT Signal : boolean;
+OUTPUT PORT Target_Tire_Direction : real;
+OUTPUT PORT Actual_angle : real;
+ 
+    	
+COMPONENT star_sensor_impl
+INTERFACE
+INPUT PORT Corner_1 : real;
+INPUT PORT Corner_2 : real;
+OUTPUT PORT Target_angle : real;
+ 
+    	
+COMPONENT Accelerometer_impl
+INTERFACE
+INPUT PORT Camera_time : real;
+INPUT PORT differ_speed : real;
+OUTPUT PORT Actual_acceleration : real;
+ 
+    	
+COMPONENT Speedometer_impl
+INTERFACE
+INPUT PORT Targer_speed : real;
+INPUT PORT Actual : real;
+OUTPUT PORT Differ_speed : real;
+OUTPUT PORT Actuator_Input : real;
+ 
+    	
+COMPONENT Throttle_impl
+INTERFACE
+INPUT PORT Actuator_Input : real;
+OUTPUT PORT Actual : real;
+ 
+    	
+    	
+COMPONENT DPU_F_impl
+INTERFACE
+INPUT PORT Target_Tire_Direction_Output : real;
+INPUT PORT Actual_angle_Out : real;
+INPUT PORT Target_angle_Out : real;
+INPUT PORT Actual_acceleration_Out : real;
+INPUT PORT Actual_Out : real;
+OUTPUT PORT Tire_Final_OutPut : real;
+OUTPUT PORT Change_angle_Output : real;
+OUTPUT PORT Final_acceleration_Output : real;
+OUTPUT PORT Final_Speed_Output : real;
+OUTPUT PORT N1_Output : real;
+OUTPUT PORT N2_Output : real;
+OUTPUT PORT N3_Output : real;
+OUTPUT PORT N4_Output : real;
+REFINEMENT
+SUB FT_A : Fiber_top_A_impl;
+SUB FT_B : Fiber_top_B_impl;
+SUB FT_C : Fiber_top_C_impl;
+SUB FT_D : Fiber_top_D_impl;
+SUB FT_M : Mecharical_impl;
+SUB DA_P : Data_process_impl;
+SUB DA_S : Data_store_impl;
+CONNECTION DA_S.Tire_Pitch_DPU := Target_Tire_Direction_Output;
+CONNECTION DA_S.Actual_angle_Input_DPU := Actual_angle_Out;
+CONNECTION DA_S.Target_angle_Input_DPU := Target_angle_Out;
+CONNECTION DA_S.Actual_acceleration_Input_DPU := Actual_acceleration_Out;
+CONNECTION DA_S.Actual_Input_DPU := Actual_Out;
+CONNECTION DA_P.A_angular_speed := FT_A.A_angular_speed;
+CONNECTION DA_P.B_angular_speed := FT_B.B_angular_speed;
+CONNECTION DA_P.C_angular_speed := FT_C.C_angular_speed;
+CONNECTION DA_P.D_angular_speed := FT_D.D_angular_speed;
+CONNECTION DA_P.MC_angular_speed := FT_M.MC_angular_speed;
+CONNECTION DA_P.Signal := FT_M.Signal;
+CONNECTION N1_Output := DA_P.N1;
+CONNECTION N2_Output := DA_P.N2;
+CONNECTION N3_Output := DA_P.N3;
+CONNECTION N4_Output := DA_P.N4;
+CONNECTION Tire_Final_OutPut := DA_S.Tire_DPU_Final;
+CONNECTION Change_angle_Output := DA_S.Change_angle;
+CONNECTION Final_acceleration_Output := DA_S.Final_acceleration;
+CONNECTION Final_Speed_Output := DA_S.Final_Speed;
+ 
+COMPONENT Fiber_top_A_impl
+INTERFACE
+OUTPUT PORT A_angular_speed : real;
+ 
+    	
+COMPONENT Fiber_top_B_impl
+INTERFACE
+OUTPUT PORT B_angular_speed : real;
+ 
+    	
+COMPONENT Fiber_top_C_impl
+INTERFACE
+OUTPUT PORT C_angular_speed : real;
+ 
+    	
+COMPONENT Fiber_top_D_impl
+INTERFACE
+OUTPUT PORT D_angular_speed : real;
+ 
+    	
+COMPONENT Mecharical_impl
+INTERFACE
+OUTPUT PORT MC_angular_speed : real;
+OUTPUT PORT Signal : boolean;
+ 
+    	
+COMPONENT Data_process_impl
+INTERFACE
+INPUT PORT A_angular_speed : real;
+INPUT PORT B_angular_speed : real;
+INPUT PORT C_angular_speed : real;
+INPUT PORT D_angular_speed : real;
+INPUT PORT MC_angular_speed : real;
+INPUT PORT Signal : boolean;
+OUTPUT PORT N1 : real;
+OUTPUT PORT N2 : real;
+OUTPUT PORT N3 : real;
+OUTPUT PORT N4 : real;
+ 
+    	
+COMPONENT Data_store_impl
+INTERFACE
+INPUT PORT Tire_Pitch_DPU : real;
+INPUT PORT Actual_angle_Input_DPU : real;
+INPUT PORT Target_angle_Input_DPU : real;
+INPUT PORT Actual_acceleration_Input_DPU : real;
+INPUT PORT Actual_Input_DPU : real;
+OUTPUT PORT Tire_DPU_Final : real;
+OUTPUT PORT Change_angle : real;
+OUTPUT PORT Final_acceleration : real;
+OUTPUT PORT Final_Speed : real;
+ 
+    	
+    	
+    	
+COMPONENT AOCS_S_impl
+INTERFACE
+INPUT PORT LTU_Tire_Final_Outout : real;
+INPUT PORT LTU_Change_angle_Output : real;
+INPUT PORT LTU_Final_acceleration_Output : real;
+INPUT PORT LTU_Final_Speed_Output : real;
+INPUT PORT LTU_N1_Output : real;
+INPUT PORT LTU_N2_Output : real;
+INPUT PORT LTU_N3_Output : real;
+INPUT PORT LTU_N4_Output : real;
+INPUT PORT Cycle_time : real;
+OUTPUT PORT Cycletime_Output : real;
+INPUT PORT Counteracting_flywheel_Power : real;
+INPUT PORT Inject_Power : real;
+INPUT PORT Engine_Power : real;
+OUTPUT PORT Cosine_change_Out : real;
+OUTPUT PORT angular_change_Out : real;
+OUTPUT PORT angle_change_2_Out : real;
+OUTPUT PORT add_speed_Out : real;
+OUTPUT PORT down_speed_Out : real;
+OUTPUT PORT Power_All : real;
+
+CONTRACT cycle_time
+assume: always(Cycle_time=0.0);
+guarantee: always (Cycletime_Output<100.0);
+
+CONTRACT power_limit
+assume: true;
+guarantee: always(Power_All=Counteracting_flywheel_Power+Inject_Power+Engine_Power);
+
+REFINEMENT
+SUB AF : Attitude_Fitter_impl;
+SUB OFL : Orbit_Filter_impl;
+SUB AG1 : Attitude_Guidance1_impl;
+SUB ACL1 : Attitude_Control1_impl;
+SUB AG2 : Attitude_Guidance2_impl;
+SUB ACL2 : Attitude_Control2_impl;
+SUB PCL : Power_Control_impl;
+CONNECTION AF.AOCS_N1_Input := LTU_N1_Output;
+CONNECTION AF.AOCS_N2_Input := LTU_N2_Output;
+CONNECTION AF.AOCS_Tire_Input := LTU_Tire_Final_Outout;
+CONNECTION AF.Cycle_time1 := Cycle_time;
+CONNECTION OFL.AOCS_Change_angle_Input := LTU_Change_angle_Output;
+CONNECTION OFL.AOCS_acceleration_Input := LTU_Final_acceleration_Output;
+CONNECTION OFL.AOCS_Speed_Input := LTU_Final_Speed_Output;
+CONNECTION AG2.AOCS_N3_Input := LTU_N3_Output;
+CONNECTION AG2.AOCS_N4_Input := LTU_N4_Output;
+CONNECTION AG1.Actual_elevation := AF.Actual_elevation;
+CONNECTION AG1.Actual_angular_velocity := AF.Actual_angular_velocity;
+CONNECTION OFL.Cycle_time2 := AF.Cycle_time2;
+CONNECTION AG1.Cycle_time3 := OFL.Cycle_time3;
+CONNECTION AG2.Orbrit_height := OFL.Orbrit_height;
+CONNECTION ACL1.Target_elevation := AG1.Target_elevation;
+CONNECTION ACL1.Target_angular := AG1.Target_angular;
+CONNECTION ACL1.Cycle_time4 := AG1.Cycle_time4;
+CONNECTION Cosine_change_Out := ACL1.Cosine_change;
+CONNECTION angular_change_Out := ACL1.angular_change;
+CONNECTION AG2.Cycle_time5 := ACL1.Cycle_time5;
+CONNECTION ACL2.Target_Speed := AG2.Target_Speed;
+CONNECTION ACL2.Increase_height := AG2.Increase_height;
+CONNECTION ACL2.Cycle_time6 := AG2.Cycle_time6;
+CONNECTION angle_change_2_Out := ACL2.angle_change_2;
+CONNECTION add_speed_Out := ACL2.add_speed;
+CONNECTION down_speed_Out := ACL2.down_speed;
+CONNECTION Cycletime_Output := ACL2.Cycle_time7;
+CONNECTION PCL.flywheel_Power_Input := Counteracting_flywheel_Power;
+CONNECTION PCL.Inject_Power_Input := Inject_Power;
+CONNECTION PCL.Engine_Power_Input := Engine_Power;
+CONNECTION Power_All := PCL.Power_Output;
+
+CONTRACT cycle_time REFINEDBY AF.cycle_time,OFL.cycle_time,AG1.cycle_time,ACL1.cycle_time,AG2.cycle_time,ACL2.cycle_time;
+
+COMPONENT Attitude_Fitter_impl
+INTERFACE
+INPUT PORT AOCS_N1_Input : real;
+INPUT PORT AOCS_N2_Input : real;
+INPUT PORT AOCS_Tire_Input : real;
+INPUT PORT Cycle_time1 : real;
+OUTPUT PORT Actual_elevation : real;
+OUTPUT PORT Actual_angular_velocity : real;
+OUTPUT PORT Cycle_time2 : real;
+
+CONTRACT cycle_time
+assume: true;
+guarantee: always (Cycle_time2=Cycle_time1+3.2); 
+    	
+COMPONENT Orbit_Filter_impl
+INTERFACE
+INPUT PORT AOCS_Change_angle_Input : real;
+INPUT PORT AOCS_acceleration_Input : real;
+INPUT PORT AOCS_Speed_Input : real;
+INPUT PORT Cycle_time2 : real;
+OUTPUT PORT Orbrit_height : integer;
+OUTPUT PORT Cycle_time3 : real;
+
+CONTRACT cycle_time
+assume: true;
+guarantee: always (Cycle_time3=Cycle_time2+4.7);  
+    	
+COMPONENT Attitude_Guidance1_impl
+INTERFACE
+INPUT PORT Cycle_time3 : real;
+INPUT PORT Actual_elevation : real;
+INPUT PORT Actual_angular_velocity : real;
+OUTPUT PORT Target_elevation : real;
+OUTPUT PORT Target_angular : real;
+OUTPUT PORT Cycle_time4 : real;
+
+CONTRACT cycle_time
+assume: true;
+guarantee: always (Cycle_time4=Cycle_time3+7.2);  
+    	
+COMPONENT Attitude_Control1_impl
+INTERFACE
+INPUT PORT Target_elevation : real;
+INPUT PORT Target_angular : real;
+INPUT PORT Cycle_time4 : real;
+OUTPUT PORT Cosine_change : real;
+OUTPUT PORT angular_change : real;
+OUTPUT PORT Cycle_time5 : real;
+
+CONTRACT cycle_time
+assume: true;
+guarantee: always (Cycle_time5=Cycle_time4+1.5);  
+    	
+COMPONENT Attitude_Guidance2_impl
+INTERFACE
+INPUT PORT AOCS_N3_Input : real;
+INPUT PORT AOCS_N4_Input : real;
+INPUT PORT Orbrit_height : integer;
+INPUT PORT Cycle_time5 : real;
+OUTPUT PORT Target_Speed : real;
+OUTPUT PORT Increase_height : integer;
+OUTPUT PORT Cycle_time6 : real;
+
+CONTRACT cycle_time
+assume: true;
+guarantee: always (Cycle_time6=Cycle_time5+2.2);  
+    	
+COMPONENT Attitude_Control2_impl
+INTERFACE
+INPUT PORT Target_Speed : real;
+INPUT PORT Increase_height : integer;
+INPUT PORT Cycle_time6 : real;
+OUTPUT PORT angle_change_2 : real;
+OUTPUT PORT add_speed : real;
+OUTPUT PORT down_speed : real;
+OUTPUT PORT Cycle_time7 : real;
+
+CONTRACT cycle_time
+assume: true;
+guarantee: always (Cycle_time7=Cycle_time6+6.5);  
+    	
+COMPONENT Power_Control_impl
+INTERFACE
+INPUT PORT flywheel_Power_Input : real;
+INPUT PORT Inject_Power_Input : real;
+INPUT PORT Engine_Power_Input : real;
+OUTPUT PORT Power_Output : real;
+ 
+CONTRACT power_limit
+assume: true;
+guarantee: always(Power_Output=flywheel_Power_Input+Inject_Power_Input+Engine_Power_Input); 	
+    	
+COMPONENT Execution_impl
+INTERFACE
+INPUT PORT Cosine_change_Out : real;
+INPUT PORT angular_change_Out : real;
+INPUT PORT angle_change_2_Out : real;
+INPUT PORT add_speed_Out : real;
+INPUT PORT down_speed_Out : real;
+OUTPUT PORT Counteracting_flywheel_Power : real;
+OUTPUT PORT Inject_Power : real;
+OUTPUT PORT Engine_Power : real;
+OUTPUT PORT Signal_C_Out : integer;
+OUTPUT PORT Signal_I_Out : integer;
+OUTPUT PORT Signal_E_Out : integer;
+
+CONTRACT power_limit
+assume: true;
+guarantee: always(Counteracting_flywheel_Power=100.0 and Inject_Power=100.0 and Engine_Power=100.0);
+
+REFINEMENT
+SUB CF : Counterating_flywheel_impl;
+SUB IJ : Injector_impl;
+SUB EG : Engine_impl;
+CONNECTION CF.Angular_change_Input := angular_change_Out;
+CONNECTION CF.down_speed_Input := down_speed_Out;
+CONNECTION IJ.angle_change_Input := angle_change_2_Out;
+CONNECTION IJ.Cosin_change_Input := Cosine_change_Out;
+CONNECTION EG.add_speed_Input := add_speed_Out;
+CONNECTION EG.down_speed_Input := down_speed_Out;
+CONNECTION Signal_C_Out := CF.Signal_C;
+CONNECTION Signal_I_Out := IJ.Signal_I;
+CONNECTION Signal_E_Out := EG.Signal_E;
+CONNECTION Counteracting_flywheel_Power := CF.flywheel_Powerout;
+CONNECTION Inject_Power := IJ.Injector_Powerout;
+CONNECTION Engine_Power := EG.Engine_Powerout;
+
+CONTRACT power_limit REFINEDBY CF.power_limit,IJ.power_limit,EG.power_limit;
+ 
+COMPONENT Counterating_flywheel_impl
+INTERFACE
+INPUT PORT Angular_change_Input : real;
+INPUT PORT down_speed_Input : real;
+OUTPUT PORT Signal_C : integer;
+OUTPUT PORT flywheel_Powerout : real;
+
+CONTRACT power_limit
+assume: true;
+guarantee: always(flywheel_Powerout=100.0); 
+    	
+COMPONENT Injector_impl
+INTERFACE
+INPUT PORT angle_change_Input : real;
+INPUT PORT Cosin_change_Input : real;
+OUTPUT PORT Signal_I : integer;
+OUTPUT PORT Injector_Powerout : real;
+ 
+CONTRACT power_limit
+assume: true;
+guarantee: always(Injector_Powerout=100.0);
+    	
+COMPONENT Engine_impl
+INTERFACE
+INPUT PORT down_speed_Input : real;
+INPUT PORT add_speed_Input : real;
+OUTPUT PORT Signal_E : integer;
+OUTPUT PORT Engine_Powerout : real;
+ 
+CONTRACT power_limit
+assume: true;
+guarantee: always(Engine_Powerout=100.0);    	
+    	
+COMPONENT Data_Management_impl
+INTERFACE
+INPUT PORT Signal_C_Out : integer;
+INPUT PORT Signal_I_Out : integer;
+INPUT PORT Signal_E_Out : integer;
+ 
+    	
+COMPONENT power_divider_impl
+INTERFACE
+INPUT PORT Power_All : real;
+OUTPUT PORT Power_output : real;
+
+CONTRACT power_limit
+assume: true;
+guarantee: always(Power_All=Power_output);  
+    	
+

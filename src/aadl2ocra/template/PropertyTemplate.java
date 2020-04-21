@@ -58,12 +58,32 @@ public class PropertyTemplate {
       boolean _equals = ((EnumerationLiteral)value).getName().toString().equals("Boolean");
       if (_equals) {
         return "boolean;";
+      } else {
+        boolean _equals_1 = ((EnumerationLiteral)value).getName().toString().equals("Float");
+        if (_equals_1) {
+          return "real;";
+        } else {
+          boolean _equals_2 = ((EnumerationLiteral)value).getName().toString().equals("Integer");
+          if (_equals_2) {
+            return "integer;";
+          }
+        }
       }
     }
     if (!_matched) {
       boolean _equals = value.getClass().getName().toString().equals("Boolean");
       if (_equals) {
         return "boolean;";
+      } else {
+        boolean _equals_1 = value.getClass().getName().toString().equals("Float");
+        if (_equals_1) {
+          return "real;";
+        } else {
+          boolean _equals_2 = value.getClass().getName().toString().equals("Integer");
+          if (_equals_2) {
+            return "integer;";
+          }
+        }
       }
     }
     return null;

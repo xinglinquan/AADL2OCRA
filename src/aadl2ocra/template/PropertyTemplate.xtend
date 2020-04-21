@@ -31,9 +31,17 @@ class PropertyTemplate {
 			EnumerationLiteral:
 				if(value.name.toString.equals("Boolean"))
 				return "boolean;"
+				else if(value.name.toString.equals("Float"))
+				return "real;"
+				else if(value.name.toString.equals("Integer"))
+				return "integer;"
 			default:
 				if(value.class.name.toString.equals("Boolean"))
 				return "boolean;"
+				else if(value.class.name.toString.equals("Float"))
+				return "real;"
+				else if(value.class.name.toString.equals("Integer"))
+				return "integer;"
 		}
 	}
 	def static parseListValue(ListValueImpl value){
