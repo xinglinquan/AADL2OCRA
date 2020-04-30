@@ -20,8 +20,8 @@ import org.osate.aadl2.impl.StringLiteralImpl;
 
 @SuppressWarnings("all")
 public class GenerateOss {
-  public static void generate(final SystemImplementation system) {
-    FileUtils.createFile("oss", "system.oss", GenerateOss.systemcompile(system).toString());
+  public static void generate(final SystemImplementation system, final String name) {
+    FileUtils.createFile("oss", name, GenerateOss.systemcompile(system).toString());
   }
   
   public static CharSequence systemcompile(final SystemImplementation system) {

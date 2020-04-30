@@ -24,7 +24,7 @@ public class Generation {
 			//IFileSystemAccess2 fsa;
 			FileUtils.projects = project;
 //			testTime.testInit();
-			GenerateOss.generate(system);
+			GenerateOss.generate(system,system.getType().getFullName()+".oss");
 //			IFolder folder = project.getFolder("Ada_codes");
 //			testTime.testEnd(folder);
 			System.out.println("success111!");

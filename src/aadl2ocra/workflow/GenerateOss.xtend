@@ -13,8 +13,8 @@ import aadl2ocra.utils.StringUtils
 class GenerateOss {
  
  
-    def static void generate(SystemImplementation system) {
-           FileUtils.createFile("oss","system.oss",systemcompile(system).toString);
+    def static void generate(SystemImplementation system,String name) {
+           FileUtils.createFile("oss",name,systemcompile(system).toString);
 
 	}
 	

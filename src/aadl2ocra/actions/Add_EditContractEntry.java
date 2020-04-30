@@ -9,6 +9,9 @@ import org.eclipse.ui.IWorkbenchPart;
 import aadl2ocra.ui.Contract;
 import aadl2ocra.ui.Start;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.eclipse.core.resources.IFile;
 
 public class Add_EditContractEntry implements IObjectActionDelegate{

@@ -9,11 +9,13 @@ import java.util.concurrent.Executors;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+
+import aadl2ocra.actions.ContractRefinementEntry;
 import aadl2ocra.function.OcraFunction;
 import aadl2ocra.utils.FileUtils;
 public class OcraRunner {
 	/** The tool executable. */
-	protected final String ocraExecutable = "G:\\ocra\\ocra-1.4.0\\bin\\win64\\ocra-win64.exe"; // executable name of the tool
+	protected final String ocraExecutable =ContractRefinementEntry.Path+"tool\\ocra\\ocra-win64.exe"; // executable name of the tool
 	/** The cmd file. */
 	protected File cmdFile;
 	/** The process that runs ocra . */
@@ -88,8 +90,10 @@ public class OcraRunner {
 		if( ocraFunction != null && createCmdFile() != null ){
 			cmdArray.add("-source");
 			//System.out.println(cmdFile.getPath());
-			//cmdArray.add(cmdFile.getCanonicalPath());
-			cmdArray.add("D:\\osate237\\runtime-EclipseApplication\\AADL_OCRA\\cmd\\system.cmd");
+			//System.out.println(cmdFile.getCanonicalPath());
+			//System.out.println(cmdFile.getAbsolutePath());
+			cmdArray.add(ContractRefinementEntry.projectpath+"cmd/system.cmd");
+			//cmdArray.add("D:\\osate237\\runtime-EclipseApplication\\AADL_OCRA\\cmd\\system.cmd");
 		}
 		else{
 			System.out.println("test");
