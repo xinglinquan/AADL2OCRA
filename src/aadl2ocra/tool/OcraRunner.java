@@ -15,7 +15,7 @@ import aadl2ocra.function.OcraFunction;
 import aadl2ocra.utils.FileUtils;
 public class OcraRunner {
 	/** The tool executable. */
-	protected final String ocraExecutable =ContractRefinementEntry.Path+"tool\\ocra\\ocra-win64.exe"; // executable name of the tool
+	protected final String ocraExecutable =ContractRefinementEntry.Path;//ContractRefinementEntry.Path+"tool\\ocra\\ocra-win64.exe"; // executable name of the tool
 	/** The cmd file. */
 	protected File cmdFile;
 	/** The process that runs ocra . */

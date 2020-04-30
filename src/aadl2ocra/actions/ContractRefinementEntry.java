@@ -46,7 +46,7 @@ public class ContractRefinementEntry implements IObjectActionDelegate {
 	private static ISelectionService selectionService;
 	@Override
 	public void run(IAction iaction) {
-		String packageName = this.getClass().getResource("").getPath();
+		/*String packageName = this.getClass().getResource("").getPath();
 		packageName = packageName.replace("/", "\\");
 		System.out.println("包名："+packageName);
 		Path = null;
@@ -58,7 +58,18 @@ public class ContractRefinementEntry implements IObjectActionDelegate {
 		} catch (IOException e1) {
 		    Path = null;
 		    e1.printStackTrace();
+		}*/
+		java.net.URL ocraurl = getClass().getResource("/tool/ocra/ocra-win64.exe");
+		java.net.URL url = null;
+		try {
+			url = org.eclipse.core.runtime.FileLocator.toFileURL(ocraurl);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+		String str = url.toString();
+		Path = str.substring(6);
+		System.out.println("test"+ Path);
 		// TODO Auto-generated method stub
 		//MainFrame2 mf = new MainFrame2(sysimpl);
 		System.out.println("1  "+_si);
