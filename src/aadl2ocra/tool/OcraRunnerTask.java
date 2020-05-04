@@ -10,7 +10,8 @@ import java.util.concurrent.Callable;
 
 import javax.swing.JFrame;
 
-import aadl2ocra.ui.CheckResult;
+import aadl2ocra.ui.ErrorResult;
+import aadl2ocra.ui.Result;
 import aadl2ocra.ui.WaitMessage;
 
 public class OcraRunnerTask implements Callable{
@@ -40,8 +41,14 @@ public class OcraRunnerTask implements Callable{
 		List<String> error  = errorStreamReader.getReadLines();
 		System.out.println("num"+error.size());
 		wm.dispose();
-		CheckResult checkResult = new CheckResult(result,error);
-		checkResult.setVisible(true);
+		if(!error.isEmpty()) {
+			ErrorResult er = new ErrorResult(error);
+			er.setVisible(true);
+		}
+		else {
+			Result ru = new Result(result);
+			ru.setVisible(true);
+		}
 		//System.out.println(outputStreamReader.getReadString());
 		System.out.println("error\n"+errorStreamReader.getReadString());
 		return null;

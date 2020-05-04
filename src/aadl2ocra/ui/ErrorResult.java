@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JLabel;
 
-public class CheckResult extends JFrame {
+public class ErrorResult extends JFrame {
 
 	private JPanel contentPane;
 
@@ -27,7 +27,7 @@ public class CheckResult extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CheckResult frame = new CheckResult(null,null);
+					ErrorResult frame = new ErrorResult(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,33 +39,17 @@ public class CheckResult extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CheckResult(List<String> result,List<String> error) {
-		setTitle("\u9A8C\u8BC1\u7ED3\u679C");
+	public ErrorResult(List<String> error) {
+		setTitle("\u9519\u8BEF\u4FE1\u606F");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1200, 800);
+		setBounds(100, 100, 507, 566);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel label = new JLabel("\u9A8C\u8BC1\u4FE1\u606F");
-		label.setBounds(260, 13, 89, 40);
-		contentPane.add(label);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(15, 66, 560, 630);
-		contentPane.add(scrollPane);
-		
-		JTextArea txa_result = new JTextArea();
-		txa_result.setFont(new Font("Monospaced", Font.PLAIN, 15));
-		txa_result.setEditable(false);
-		scrollPane.setViewportView(txa_result);
-		for(int i =18;i<result.size();i++) {
-			txa_result.append(result.get(i)+"\n");
-		}
-		
 		JLabel label_1 = new JLabel("\u9519\u8BEF\u4FE1\u606F");
-		label_1.setBounds(861, 19, 89, 29);
+		label_1.setBounds(203, 13, 89, 29);
 		contentPane.add(label_1);
 		
 		JButton btnNewButton = new JButton("\u9000\u51FA");
@@ -76,7 +60,7 @@ public class CheckResult extends JFrame {
 		});
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(608, 66, 560, 630);
+		scrollPane_1.setBounds(14, 59, 463, 365);
 		contentPane.add(scrollPane_1);
 		
 		JTextArea txa_error = new JTextArea();
@@ -86,7 +70,7 @@ public class CheckResult extends JFrame {
 		for(int i =0;i<error.size();i++) {
 			txa_error.append(error.get(i)+"\n");
 		}
-		btnNewButton.setBounds(535, 713, 113, 27);
+		btnNewButton.setBounds(179, 461, 113, 27);
 		contentPane.add(btnNewButton);		
 	}
 }
