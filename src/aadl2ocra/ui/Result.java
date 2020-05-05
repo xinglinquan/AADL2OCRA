@@ -55,14 +55,14 @@ public class Result extends JFrame {
 		findcomponent();
 		setTitle("\u9A8C\u8BC1\u7ED3\u679C");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 650, 650);
+		setBounds(100, 100, 800, 570);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(14, 34, 604, 493);
+		scrollPane.setBounds(14, 34, 754, 400);
 		contentPane.add(scrollPane);
 		Object[][] obj = new Object[result.size()][4];
 		for(int i =0;i<result.size();i++) {
@@ -83,15 +83,15 @@ public class Result extends JFrame {
 				obj[i][3]="³É¹¦";
 		}
 		table = new JTable(obj, columnNames);
-		table.getColumnModel().getColumn(0).setPreferredWidth(130);
-		table.getColumnModel().getColumn(1).setPreferredWidth(130);
-		table.getColumnModel().getColumn(2).setPreferredWidth(284);
+		table.getColumnModel().getColumn(0).setPreferredWidth(147);
+		table.getColumnModel().getColumn(1).setPreferredWidth(147);
+		table.getColumnModel().getColumn(2).setPreferredWidth(400);
 		table.getColumnModel().getColumn(3).setPreferredWidth(60);
 		//table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		scrollPane.setViewportView(table);
 		
 		
-		comboBox.setBounds(14, 540, 198, 29);
+		comboBox.setBounds(14, 486, 198, 29);
 		contentPane.add(comboBox);
 		
 		JButton bt_checkcounter = new JButton("\u67E5\u770B\u53CD\u4F8B");
@@ -102,7 +102,7 @@ public class Result extends JFrame {
 				ce.setVisible(true);
 			}
 		});
-		bt_checkcounter.setBounds(254, 541, 120, 27);
+		bt_checkcounter.setBounds(274, 487, 120, 27);
 		contentPane.add(bt_checkcounter);
 		
 		JButton bt_exit = new JButton("\u9000\u51FA");
@@ -111,7 +111,7 @@ public class Result extends JFrame {
 				dispose();
 			}
 		});
-		bt_exit.setBounds(505, 541, 113, 27);
+		bt_exit.setBounds(655, 487, 113, 27);
 		contentPane.add(bt_exit);
 	}
 	public void findcomponent() {
@@ -119,6 +119,7 @@ public class Result extends JFrame {
 			if(s.indexOf("Checking refinement of component:")!=-1) {
 				String[] temp = s.split("\\s+");
 				componentList.add(temp[temp.length-1]);
+				System.out.println("component is "+temp[temp.length-1]);
 			}
 		}
 		for(String s : componentList) {
@@ -135,7 +136,7 @@ public class Result extends JFrame {
 				start=i;
 				System.out.println("start is "+start);
 			}
-			if((resultList.get(i).indexOf("Checking refinement of component: ")!=-1)&&i>start) {
+			if((resultList.get(i).indexOf("Checking refinement of component: ")!=-1)&&i>start&&start!=-1) {
 				end=i;
 				System.out.println("end is "+end);
 				break;

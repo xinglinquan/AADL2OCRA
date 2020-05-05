@@ -101,7 +101,8 @@ public class Contract_Info extends JFrame {
 		
 		JTextArea txa_Refined = new JTextArea();
 		txa_Refined.setEditable(false);
-		txa_Refined.setText(replaceBlank(dealrefinedby(contract.getRefinedby().toString())));
+		if(!contract.getRefinedby().toString().isEmpty())
+			txa_Refined.setText(replaceBlank(dealrefinedby(contract.getRefinedby().toString())));
 		scrollPane_2.setViewportView(txa_Refined);
 		
 		JButton bt_Exit = new JButton("\u9000\u51FA");
@@ -176,6 +177,6 @@ public class Contract_Info extends JFrame {
 	}
 	private static String dealrefinedby(String str) {
 		int start = str.indexOf("REFINEDBY");
-		return str.substring(start+9, str.length()-1);
+		return str.substring(start+9, str.length());
 	}
 }

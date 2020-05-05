@@ -41,9 +41,15 @@ public class OcraRunnerTask implements Callable{
 		List<String> error  = errorStreamReader.getReadLines();
 		System.out.println("num"+error.size());
 		wm.dispose();
-		if(!error.isEmpty()) {
+		if(!error.isEmpty()&&error.get(0).indexOf("Warning")==-1) {
 			ErrorResult er = new ErrorResult(error);
 			er.setVisible(true);
+		}
+		else if(error.get(0).indexOf("Warning")!=-1){
+			ErrorResult er = new ErrorResult(error);
+			er.setVisible(true);
+			Result ru = new Result(result);
+			ru.setVisible(true);
 		}
 		else {
 			Result ru = new Result(result);
